@@ -178,3 +178,4 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 box_out "Setting up.."
 
 setup_entry powerlevel9k $HOME/.oh-my-zsh/custom/themes
+setup_entry powerlevel10k $HOME/.oh-my-zsh/custom/themes
