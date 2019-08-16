@@ -7,7 +7,6 @@ VERBOSE=0
 QUIET=0
 LOGFILE=/tmp/conforg.log
 DEFAULT_CONFORG_DIR=$HOME/.dot-config
-DOT_DIR=$DEFAULT_CONFORG_DIR/contrib
 GITIGNORE_IN=./contrib/gitignore
 GITIGNORE_OUT=$HOME/.gitignore_global
 PASSWORD_STORE=false
@@ -116,25 +115,26 @@ fi
 # Setup a single entry
 function setup_entry {
 entry=$1
-home_entry=$2
+source_entry=$2
+home_entry=$3
 echo "-----------------------------------"
 echo Setting up $entry..
 if [ -e $home_entry/"$entry" ];
 then
   if [ -L $home_entry/"$entry" ];
   then
-    if [ "$(readlink $home_entry/$entry)" = $DOT_DIR/"$entry" ];
+    if [ "$(readlink $home_entry/$entry)" = $source_entry/"$entry" ];
     then
       echo "Target $home_entry/$entry symlink already setup! Skipping.."
       return 0
     else
       echo "Target $home_entry/$entry symlink exists but pointing to another file!"
       echo " >> $home_entry/$entry is pointing to $(readlink $home_entry/$entry)"
-      echo " >> But I am trying to setup symlink to $DOT_DIR/$entry"
+      echo " >> But I am trying to setup symlink to $source_entry/$entry"
       while true; do
         read -p "Do you wish to force re-linking this entry?" yn
         case $yn in
-          [Yy]* ) rm -f $home_entry/"$entry"; ln -s $DOT_DIR/"$entry" $home_entry/"$entry"; echo "Done."; break;;
+          [Yy]* ) rm -f $home_entry/"$entry"; ln -s $source_entry/"$entry" $home_entry/"$entry"; echo "Done."; break;;
           [Nn]* ) echo Skipping..; break;;
           * ) echo "Please answer [y]es or [n]o.";;
         esac
@@ -157,16 +157,16 @@ else
   then
     echo "Target $home_entry/$entry exists as a broken symlink!"
     echo " >> $home_entry/$entry is pointing to $(readlink $home_entry/$entry)"
-    read -p "Force re-linking this entry to $DOT_DIR/$entry?" yn
+    read -p "Force re-linking this entry to $source_entry/$entry?" yn
     while true; do
       case $yn in
-        [Yy]* ) rm -f $home_entry/"$entry"; ln -s $DOT_DIR/"$entry" $home_entry/"$entry"; echo "Done."; break;;
+        [Yy]* ) rm -f $home_entry/"$entry"; ln -s $source_entry/"$entry" $home_entry/"$entry"; echo "Done."; break;;
         [Nn]* ) echo Skipping..; break;;
         * ) echo "Please answer [y]es or [n]o.";;
       esac
     done
   else
-    ln -s $DOT_DIR/"$entry" $home_entry/"$entry"
+    ln -s $source_entry/"$entry" $home_entry/"$entry"
     echo "Done."
   fi
   return
@@ -177,5 +177,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 
 box_out "Setting up.."
 
-setup_entry powerlevel9k $HOME/.oh-my-zsh/custom/themes
-setup_entry powerlevel10k $HOME/.oh-my-zsh/custom/themes
+setup_entry powerlevel9k $DEFAULT_CONFORG_DIR/contrib $HOME/.oh-my-zsh/custom/themes
+setup_entry powerlevel10k $DEFAULT_CONFORG_DIR/contrib $HOME/.oh-my-zsh/custom/themes
+setup_entry .zshrc $DEFAULT_CONFORG_DIR/contrib/zsh $HOME
