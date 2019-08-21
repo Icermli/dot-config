@@ -112,6 +112,19 @@ if [[ $VERBOSE != 0 ]]; then
   echo "+ Running on $PLATFORM"
 fi
 
+box_out "Setting up directory structure.."
+# in a subshell
+(
+  if [[ $VERBOSE != 0 ]]; then
+    set -x;
+  fi
+  mkdir -p $HOME/.config;
+  mkdir -p $HOME/.config/conforg;
+  mkdir -p $HOME/.config/nvim;
+  mkdir -p $HOME/.config/nvim/autoload/;
+  mkdir -p $HOME/.config/nvim/syntax/;
+)
+
 # Setup a single entry
 function setup_entry {
 entry=$1
