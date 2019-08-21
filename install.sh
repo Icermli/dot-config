@@ -202,3 +202,9 @@ cp contrib/vim-plug/plug.vim $HOME/.config/nvim/autoload/plug.vim
 
 # Vim-pyopencl
 cp contrib/vim-pyopencl/pyopencl.vim $HOME/.config/nvim/syntax/pyopencl.vim
+
+# cli-utils
+if [ -L $HOME/cli-utils ]; then
+  rm -f $HOME/cli-utils
+fi
+ln -sf $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
