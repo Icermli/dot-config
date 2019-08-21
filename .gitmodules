@@ -7,3 +7,6 @@
 [submodule "contrib/powerlevel10k"]
 	path = contrib/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k.git
+[submodule "contrib/bash-insulter"]
+	path = contrib/bash-insulter
+	url = https://github.com/hkbakke/bash-insulter.git
