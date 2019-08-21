@@ -194,6 +194,7 @@ box_out "Setting up.."
 setup_entry powerlevel9k $DEFAULT_CONFORG_DIR/contrib $HOME/.oh-my-zsh/custom/themes
 setup_entry powerlevel10k $DEFAULT_CONFORG_DIR/contrib $HOME/.oh-my-zsh/custom/themes
 setup_entry .zshrc $DEFAULT_CONFORG_DIR/contrib/zsh $HOME
+setup_entry cli-utils $DEFAULT_CONFORG_DIR/contrib $HOME
 
 box_out "Adding final touches.."
 
@@ -202,9 +203,3 @@ cp contrib/vim-plug/plug.vim $HOME/.config/nvim/autoload/plug.vim
 
 # Vim-pyopencl
 cp contrib/vim-pyopencl/pyopencl.vim $HOME/.config/nvim/syntax/pyopencl.vim
-
-# cli-utils
-if [ -L $HOME/cli-utils ]; then
-  rm -f $HOME/cli-utils
-fi
-ln -sf $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
