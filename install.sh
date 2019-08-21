@@ -186,6 +186,7 @@ else
 fi
 }
 
+# Install oh-my-zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
 box_out "Setting up.."
@@ -193,3 +194,11 @@ box_out "Setting up.."
 setup_entry powerlevel9k $DEFAULT_CONFORG_DIR/contrib $HOME/.oh-my-zsh/custom/themes
 setup_entry powerlevel10k $DEFAULT_CONFORG_DIR/contrib $HOME/.oh-my-zsh/custom/themes
 setup_entry .zshrc $DEFAULT_CONFORG_DIR/contrib/zsh $HOME
+
+box_out "Adding final touches.."
+
+# Vim-plug
+cp contrib/vim-plug/plug.vim $HOME/.config/nvim/autoload/plug.vim
+
+# Vim-pyopencl
+cp contrib/vim-pyopencl/pyopencl.vim $HOME/.config/nvim/syntax/pyopencl.vim
