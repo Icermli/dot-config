@@ -121,8 +121,10 @@ box_out "Setting up directory structure.."
   mkdir -p $HOME/.config;
   mkdir -p $HOME/.config/conforg;
   mkdir -p $HOME/.config/nvim;
-  mkdir -p $HOME/.config/nvim/autoload/;
-  mkdir -p $HOME/.config/nvim/syntax/;
+  mkdir -p $HOME/.config/nvim/autoload;
+  mkdir -p $HOME/.config/nvim/syntax;
+
+  mkdir -p $HOME/cli-utils;
 )
 
 # Setup a single entry
@@ -194,7 +196,8 @@ box_out "Setting up.."
 setup_entry powerlevel9k $DEFAULT_CONFORG_DIR/contrib $HOME/.oh-my-zsh/custom/themes
 setup_entry powerlevel10k $DEFAULT_CONFORG_DIR/contrib $HOME/.oh-my-zsh/custom/themes
 setup_entry .zshrc $DEFAULT_CONFORG_DIR/contrib/zsh $HOME
-setup_entry cli-utils $DEFAULT_CONFORG_DIR/contrib $HOME
+setup_entry tmuxline $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
+setup_entry applescript $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 
 box_out "Adding final touches.."
 
@@ -203,3 +206,6 @@ cp contrib/vim-plug/plug.vim $HOME/.config/nvim/autoload/plug.vim
 
 # Vim-pyopencl
 cp contrib/vim-pyopencl/pyopencl.vim $HOME/.config/nvim/syntax/pyopencl.vim
+
+# Bash-insulter
+cp contrib/bash-insulter $HOME/cli-utils/
