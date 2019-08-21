@@ -1,0 +1,21 @@
+# This tmux statusbar config was created by tmuxline.vim
+# on Fri, 19 Oct 2018
+
+set -g status-justify "left"
+set -g status "on"
+set -g message-command-style bg="colour250",fg="colour237"
+set -g status-left-length "100"
+set -g pane-active-border-style fg="colour248"
+set -g status-style bg="colour252","none"
+set -g pane-border-style fg="colour250"
+set -g message-style bg="colour250",fg="colour237"
+set -g status-left-style "none"
+set -g status-right-style "none"
+set -g status-right-length "100"
+setw -g window-status-style fg="colour237",bg="colour252","none"
+setw -g window-status-activity-style bg="colour252",fg="colour248","none"
+setw -g window-status-separator ""
+set -g status-left "#[fg=colour237,bg=colour248] #S #[fg=colour248,bg=colour252,nobold,nounderscore,noitalics]"
+set -g status-right "#[fg=colour250,bg=colour252,nobold,nounderscore,noitalics]#[fg=colour200,bg=colour238] ♫ #(osascript -l JavaScript ~/cli-utils/applescript/tunes.js) #[fg=colour237,bg=colour238,nobold,nounderscore,noitalics]#[fg=colour237,bg=colour250] %Y-%m-%d  %H:%M #[fg=colour248,bg=colour250,nobold,nounderscore,noitalics]#[fg=colour237,bg=colour248] #h "
+setw -g window-status-format "#[fg=colour237,bg=colour252] #I #[fg=colour237,bg=colour252] #W "
+setw -g window-status-current-format "#[fg=colour252,bg=colour250,nobold,nounderscore,noitalics]#[fg=colour237,bg=colour250] #I #[fg=colour237,bg=colour250] #W #[fg=colour250,bg=colour252,nobold,nounderscore,noitalics]"
