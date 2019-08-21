@@ -586,7 +586,7 @@ endif
 " set tags+=$HOME/Dropbox/Sources/tags;
 
 " Add my own snipptes
-set runtimepath+=$HOME/.config/nvim/MySnips
+set runtimepath+=$HOME/.config/nvim/nvim-snips
 let g:UltiSnipsSnippetDirectories=[$HOME.'/.config/nvim/nvim-snips']
 
 " Filetype system
