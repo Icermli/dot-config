@@ -10,3 +10,6 @@
 [submodule "contrib/bash-insulter"]
 	path = contrib/bash-insulter
 	url = https://github.com/hkbakke/bash-insulter.git
+[submodule "contrib/gitignore"]
+	path = contrib/gitignore
+	url = https://github.com/github/gitignore.git
