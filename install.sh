@@ -229,6 +229,15 @@ echo "!*.py" >> $GITIGNORE_OUT
 cd contrib/jupyter-nbconfig && sh ./setup.sh
 cd ../..
 
+# TPM (auto update if exists)
+TPMPATH=$HOME/.tmux/plugins/tpm
+if ! [ -d $TPMPATH/.git ]; then
+  git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm \
+  >> $LOGFILE 2>&1
+else
+  (cd $TPMPATH && git pull >> $LOGFILE 2>&1 && cd - >> $LOGFILE 2>&1)
+fi
+
 ##################################################################
 # minimal install ends here
 ##################################################################
