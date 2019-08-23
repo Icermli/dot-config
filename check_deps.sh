@@ -12,9 +12,6 @@ dunst
 dmenu
 flash_window
 git
-i3
-i3blocks
-emacs
 fc-list
 fzf
 make
@@ -87,4 +84,3 @@ echo "
   don't celebrate too early,
   you still have to take efforts to install correct fonts.
   "
-
