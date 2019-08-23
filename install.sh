@@ -224,6 +224,11 @@ cat $GITIGNORE_IN/*.gitignore >> $GITIGNORE_OUT
 # Python files are not to be ignored (e.g. __init__.py)
 echo "!*.py" >> $GITIGNORE_OUT
 
+# Jupyter notebook config
+# requires: jupyterlab, jupytext
+cd contrib/jupyter-nbconfig && sh ./setup.sh
+cd ../..
+
 ##################################################################
 # minimal install ends here
 ##################################################################
