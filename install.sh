@@ -211,3 +211,15 @@ cp contrib/vim-pyopencl/pyopencl.vim $HOME/.config/nvim/syntax/pyopencl.vim
 
 # Bash-insulter
 cp contrib/bash-insulter $HOME/cli-utils/
+
+if [[ $VERBOSE != 0 ]]; then
+  set +o xtrace
+  echo "+ Adding contents to .gitignore_global"
+fi
+
+# .gitignore_global
+cat $GITIGNORE_IN/Global/*.gitignore >> $GITIGNORE_OUT
+cat $GITIGNORE_IN/*.gitignore >> $GITIGNORE_OUT
+
+# Python files are not to be ignored (e.g. __init__.py)
+echo "!*.py" >> $GITIGNORE_OUT
