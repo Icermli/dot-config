@@ -223,3 +223,12 @@ cat $GITIGNORE_IN/*.gitignore >> $GITIGNORE_OUT
 
 # Python files are not to be ignored (e.g. __init__.py)
 echo "!*.py" >> $GITIGNORE_OUT
+
+##################################################################
+# minimal install ends here
+##################################################################
+if $MINIMAL_INSTALL; then
+  box_warn "Warning: This is a minimal install, skipping extra setups."
+  echo "+ Finishing up"
+  finish_up
+fi
