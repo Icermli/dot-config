@@ -13,3 +13,6 @@
 [submodule "contrib/gitignore"]
 	path = contrib/gitignore
 	url = https://github.com/github/gitignore.git
+[submodule "contrib/dircolors-solarized"]
+	path = contrib/dircolors-solarized
+	url = https://github.com/seebi/dircolors-solarized.git
