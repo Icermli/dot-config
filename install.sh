@@ -124,6 +124,9 @@ box_out "Setting up directory structure.."
   mkdir -p $HOME/.config/nvim/autoload;
   mkdir -p $HOME/.config/nvim/syntax;
 
+  mkdir -p $HOME/.config/ranger;
+  mkdir -p $HOME/.config/ranger/colorschemes/;
+
   mkdir -p $HOME/cli-utils;
 )
 
@@ -237,6 +240,16 @@ if ! [ -d $TPMPATH/.git ]; then
 else
   (cd $TPMPATH && git pull >> $LOGFILE 2>&1 && cd - >> $LOGFILE 2>&1)
 fi
+
+# Ranger file glyphs
+cd contrib/ranger_devicons && make install \
+  >> /tmp/conforg.log 2>&1
+cd ../..
+
+# Ranger color theme
+cd contrib/ranger_colortheme && cat ranger_colortheme_custom.py \
+  > $HOME/.config/ranger/colorschemes/custom.py
+cd ../..
 
 ##################################################################
 # minimal install ends here
