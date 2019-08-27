@@ -94,6 +94,23 @@ function box_warn()
   tput sgr 0
 }
 
+function finish_up()
+{
+  # Save the command only if the installer proceeds this far
+  echo $INSTALL_ARGS > $HOME/.config/conforgrc
+
+  box_out "Almost done: manual setup required."
+  if [[ $QUIET != 0 ]]; then
+    exit 0
+  else
+    echo "- To finish setting up Tmux plugins, open up tmux and hit 'prefix + I'."
+    echo "- To finish setting up Neovim plugins, open up neovim and run ':PlugInstall'."
+    echo "- To finish setting up, open up zsh and do the zkbd setup (preferably in a true terminal)."
+  fi
+
+  exit 0
+}
+
 box_out "Greetings. Please make sure you cloned the repo under $DEFAULT_CONFORG_DIR."
 
 box_out "Detecting your OS.."
@@ -259,3 +276,5 @@ if $MINIMAL_INSTALL; then
   echo "+ Finishing up"
   finish_up
 fi
+
+finish_up
