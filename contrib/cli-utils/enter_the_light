@@ -1,17 +1,13 @@
 #!/bin/sh
 # Turn on light mode universally.
 
-# tell conforg to open new windows in light mode
-echo "light" > $HOME/.config/conforg/colorscheme
+sed -i '' 's/^set\ background=dark$/set\ background=light/' $HOME/.config/nvim/init.vim
+sed -i '' "s/^let\ g:airline_theme='solarized'$/let\ g:airline_theme='sol'/" $HOME/.config/nvim/init.vim
 
-sed -i 's/^set\ background=dark$/set\ background=light/' $HOME/.config/nvim/init.vim
-sed -i "s/^let\ g:airline_theme='solarized'$/let\ g:airline_theme='sol'/" $HOME/.config/nvim/init.vim
-
-sed -i "s/^POWERLEVEL9K_COLOR_SCHEME='dark'$/POWERLEVEL9K_COLOR_SCHEME='light'/" $HOME/.zshrc
+sed -i '' "s/^POWERLEVEL9K_COLOR_SCHEME='dark'$/POWERLEVEL9K_COLOR_SCHEME='light'/" $HOME/.zshrc
 
 # if running interactively, switch running shell to light mode
-if [[ $- == *i* ]]; then
-  POWERLEVEL9K_COLOR_SCHEME='light'
-  source  $CONFORG_DIR/contrib/powerlevel9k/powerlevel9k.zsh-theme
-fi
-
+# if [[ $- == *i* ]]; then
+#   POWERLEVEL9K_COLOR_SCHEME='light'
+#   source  $CONFORG_DIR/contrib/powerlevel9k/powerlevel9k.zsh-theme
+# fi
