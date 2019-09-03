@@ -4,10 +4,15 @@
 # Usage in terminal (changes prompt's color as well):
 # . enter_the_dark
 
-sed -i '' 's/^set\ background=light$/set\ background=dark/' $HOME/.config/nvim/init.vim
-sed -i '' "s/^let\ g:airline_theme='sol'$/let\ g:airline_theme='solarized'/" $HOME/.config/nvim/init.vim
-
-sed -i '' "s/^POWERLEVEL9K_COLOR_SCHEME='light'$/POWERLEVEL9K_COLOR_SCHEME='dark'/" $HOME/.zshrc
+if [[ `uname` == 'Linux' ]]; then
+  sed -i 's/^set\ background=light$/set\ background=dark/' $HOME/.config/nvim/init.vim
+  sed -i "s/^let\ g:airline_theme='sol'$/let\ g:airline_theme='solarized'/" $HOME/.config/nvim/init.vim
+  sed -i "s/^POWERLEVEL9K_COLOR_SCHEME='light'$/POWERLEVEL9K_COLOR_SCHEME='dark'/" $HOME/.zshrc
+elif [[ `uname` == 'Darwin' ]]; then
+  sed -i '' 's/^set\ background=light$/set\ background=dark/' $HOME/.config/nvim/init.vim
+  sed -i '' "s/^let\ g:airline_theme='sol'$/let\ g:airline_theme='solarized'/" $HOME/.config/nvim/init.vim
+  sed -i '' "s/^POWERLEVEL9K_COLOR_SCHEME='light'$/POWERLEVEL9K_COLOR_SCHEME='dark'/" $HOME/.zshrc
+fi
 
 # if running interactively, switch running shell to dark mode
 # if [[ $- == *i* ]]; then

@@ -1,10 +1,15 @@
 #!/bin/sh
 # Turn on light mode universally.
 
-sed -i '' 's/^set\ background=dark$/set\ background=light/' $HOME/.config/nvim/init.vim
-sed -i '' "s/^let\ g:airline_theme='solarized'$/let\ g:airline_theme='sol'/" $HOME/.config/nvim/init.vim
-
-sed -i '' "s/^POWERLEVEL9K_COLOR_SCHEME='dark'$/POWERLEVEL9K_COLOR_SCHEME='light'/" $HOME/.zshrc
+if [[ `uname` == 'Linux' ]]; then
+  sed -i 's/^set\ background=dark$/set\ background=light/' $HOME/.config/nvim/init.vim
+  sed -i "s/^let\ g:airline_theme='solarized'$/let\ g:airline_theme='sol'/" $HOME/.config/nvim/init.vim
+  sed -i "s/^POWERLEVEL9K_COLOR_SCHEME='dark'$/POWERLEVEL9K_COLOR_SCHEME='light'/" $HOME/.zshrc
+elif [[ `uname` == 'Darwin' ]]; then
+  sed -i '' 's/^set\ background=dark$/set\ background=light/' $HOME/.config/nvim/init.vim
+  sed -i '' "s/^let\ g:airline_theme='solarized'$/let\ g:airline_theme='sol'/" $HOME/.config/nvim/init.vim
+  sed -i '' "s/^POWERLEVEL9K_COLOR_SCHEME='dark'$/POWERLEVEL9K_COLOR_SCHEME='light'/" $HOME/.zshrc
+fi
 
 # if running interactively, switch running shell to light mode
 # if [[ $- == *i* ]]; then
