@@ -111,42 +111,6 @@ function finish_up()
   exit 0
 }
 
-box_out "Greetings. Please make sure you cloned the repo under $DEFAULT_CONFORG_DIR."
-
-box_out "Detecting your OS.."
-
-PLATFORM='unknown'
-UNAMESTR=`uname`
-if [[ "$UNAMESTR" == 'Linux' ]]; then
-   PLATFORM='linux'
-elif [[ "$UNAMESTR" == 'Darwin' ]]; then
-   PLATFORM='mac'
-elif [[ "$UNAMESTR" == 'FreeBSD' ]]; then
-   PLATFORM='freebsd'
-fi
-
-if [[ $VERBOSE != 0 ]]; then
-  echo "+ Running on $PLATFORM"
-fi
-
-box_out "Setting up directory structure.."
-# in a subshell
-(
-  if [[ $VERBOSE != 0 ]]; then
-    set -x;
-  fi
-  mkdir -p $HOME/.config;
-  mkdir -p $HOME/.config/conforg;
-  mkdir -p $HOME/.config/nvim;
-  mkdir -p $HOME/.config/nvim/autoload;
-  mkdir -p $HOME/.config/nvim/syntax;
-
-  mkdir -p $HOME/.config/ranger;
-  mkdir -p $HOME/.config/ranger/colorschemes/;
-
-  mkdir -p $HOME/cli-utils;
-)
-
 # Setup a single entry
 function setup_entry {
 entry=$1
@@ -207,6 +171,50 @@ else
   return
 fi
 }
+
+box_out "Greetings. Please make sure you cloned the repo under $DEFAULT_CONFORG_DIR."
+
+box_out "Detecting your OS.."
+
+PLATFORM='unknown'
+UNAMESTR=`uname`
+if [[ "$UNAMESTR" == 'Linux' ]]; then
+   PLATFORM='linux'
+elif [[ "$UNAMESTR" == 'Darwin' ]]; then
+   PLATFORM='mac'
+elif [[ "$UNAMESTR" == 'FreeBSD' ]]; then
+   PLATFORM='freebsd'
+fi
+
+if [[ $VERBOSE != 0 ]]; then
+  echo "+ Running on $PLATFORM"
+fi
+
+box_out "Setting up directory structure.."
+# in a subshell
+(
+  if [[ $VERBOSE != 0 ]]; then
+    set -x;
+  fi
+  mkdir -p $HOME/.config;
+  mkdir -p $HOME/.config/conforg;
+  mkdir -p $HOME/.config/nvim;
+  mkdir -p $HOME/.config/nvim/autoload;
+  mkdir -p $HOME/.config/nvim/syntax;
+
+  mkdir -p $HOME/.config/ranger;
+  mkdir -p $HOME/.config/ranger/colorschemes/;
+
+  mkdir -p $HOME/cli-utils;
+)
+
+if [ -f $DEFAULT_CONFORG_DIR/README.md ];
+then
+  echo Installing dot files..
+else
+  echo ERROR: Install.sh must be ran from under .dot-config/. 1>&2
+  exit 1
+fi
 
 # Install oh-my-zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
