@@ -226,6 +226,7 @@ setup_entry powerlevel10k $DEFAULT_CONFORG_DIR/contrib $HOME/.oh-my-zsh/custom/t
 setup_entry .zshrc $DEFAULT_CONFORG_DIR/contrib/zsh $HOME
 setup_entry tmuxline $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 setup_entry applescript $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
+setup_entry docker_cleanup $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 setup_entry init.vim $DEFAULT_CONFORG_DIR/contrib/nvim $HOME/.config/nvim
 setup_entry nvim-snips $DEFAULT_CONFORG_DIR/contrib/nvim $HOME/.config/nvim
 
