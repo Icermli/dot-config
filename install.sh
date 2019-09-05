@@ -227,6 +227,9 @@ setup_entry .zshrc $DEFAULT_CONFORG_DIR/contrib/zsh $HOME
 setup_entry tmuxline $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 setup_entry applescript $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 setup_entry docker-cleanup $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
+setup_entry enter_the_dark $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
+setup_entry enter_the_light $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
+setup_entry set_dynamic_colors $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 setup_entry init.vim $DEFAULT_CONFORG_DIR/contrib/nvim $HOME/.config/nvim
 setup_entry nvim-snips $DEFAULT_CONFORG_DIR/contrib/nvim $HOME/.config/nvim
 
