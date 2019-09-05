@@ -2,12 +2,19 @@
 
 currenttime=$(date +%H:%M)
 if [[ "$currenttime" > "17:59" ]] || [[ "$currenttime" < "05:59" ]]; then
-  notify-send -a "Conforg" "It's night time" \
+  if [[ `uname` == 'Linux' ]]; then
+    notify-send -a "Dot-config" "It's night time" \
     "🌙🦇🦉🌃 Long and behold, let's enter the dark."
+  elif [[ `uname` == 'Darwin' ]]; then
+    osascript -e 'display notification "It'\''s night time 🌙🦇🦉🌃 Long and behold, let'\''s enter the dark." with title "Dot-config"'
+  fi
   source ~/cli-utils/enter_the_dark
 else
-  notify-send -a "Conforg" "It's day time" \
+  if [[ `uname` == 'Linux' ]]; then
+    notify-send -a "Dot-config" "It's day time" \
     "☀️🐿️🐶🏖️ Long and behold, let's enter the light."
+  elif [[ `uname` == 'Darwin' ]]; then
+    osascript -e 'display notification "It'\''s day time ☀️🐿️🐶🏖️ Long and behold, let'\''s enter the light." with title "Dot-config"'
+  fi
   source ~/cli-utils/enter_the_light
 fi
-
