@@ -1,19 +1,20 @@
 #!/bin/bash
-
+# completely clean all docker images, containers and volumes
+# https://gist.github.com/JeffBelback/5687bb02f3618965ca8f
+# Stop all containers
 echo 'stopping containers...'
 if [[ -n "$( docker ps -a -q )" ]]; then
   docker stop $(docker ps -a -q)
 fi
-
+# Delete all containers
 echo 'deleting containers...'
 if [[ -n "$( docker ps -a -q )" ]] ; then
   docker rm $(docker ps -a -q)
 fi
-
+# Delete all images
 echo 'deleting images...'
 if [[ -n "$( docker images -q )" ]] ; then
   docker rmi $(docker images -q)
 fi
-
+# Remove all unused local volumes
 docker volume prune
-
