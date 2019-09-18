@@ -1,4 +1,5 @@
 #!/bin/bash
+# new a tmux session with several windows
 
 session_name='dev'
 tmux new-session -d -s $session_name
@@ -6,8 +7,8 @@ tmux rename-window 'cereal'
 tmux new-window -n 'notebook'
 tmux new-window -n 'shell'
 tmux new-window
-tmux send-keys -t $session_name:'cereal' "conda activate cereal" Enter "clear" Enter
-tmux send-keys -t $session_name:'notebook' "conda activate myenv" Enter "clear" Enter
-tmux send-keys -t $session_name:'shell' "conda activate myenv" Enter "clear" Enter
-tmux send-keys -t $session_name "conda activate myenv" Enter "clear" Enter
+# tmux send-keys -t $session_name:'cereal' "conda activate cereal" Enter "clear" Enter
+# tmux send-keys -t $session_name:'notebook' "conda activate myenv" Enter "clear" Enter
+# tmux send-keys -t $session_name:'shell' "conda activate myenv" Enter "clear" Enter
+# tmux send-keys -t $session_name "conda activate myenv" Enter "clear" Enter
 tmux -2 attach-session -d

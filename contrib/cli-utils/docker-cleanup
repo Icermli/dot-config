@@ -1,6 +1,7 @@
 #!/bin/bash
 # completely clean all docker images, containers and volumes
 # https://gist.github.com/JeffBelback/5687bb02f3618965ca8f
+
 # Stop all containers
 echo 'stopping containers...'
 if [[ -n "$( docker ps -a -q )" ]]; then
