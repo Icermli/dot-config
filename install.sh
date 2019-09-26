@@ -226,15 +226,24 @@ setup_entry powerlevel10k $DEFAULT_CONFORG_DIR/contrib $HOME/.oh-my-zsh/custom/t
 setup_entry .zshrc $DEFAULT_CONFORG_DIR/contrib/zsh $HOME
 setup_entry tmuxline $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 setup_entry applescript $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
-setup_entry docker-cleanup $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
-setup_entry enter_the_dark $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
-setup_entry enter_the_light $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
-setup_entry set_dynamic_colors $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
-setup_entry dev-tmux $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 setup_entry init.vim $DEFAULT_CONFORG_DIR/contrib/nvim $HOME/.config/nvim
 setup_entry nvim-snips $DEFAULT_CONFORG_DIR/contrib/nvim $HOME/.config/nvim
 
 box_out "Adding final touches.."
+
+# Docker-cleanup
+cp $DEFAULT_CONFORG_DIR/contrib/docker-cleanup $HOME/cli-utils/docker-cleanup
+
+# Set_dynamic_colors
+cp $DEFAULT_CONFORG_DIR/contrib/enter_the_dark $HOME/cli-utils/enter_the_dark
+cp $DEFAULT_CONFORG_DIR/contrib/enter_the_light $HOME/cli-utils/enter_the_light
+cp $DEFAULT_CONFORG_DIR/contrib/set_dynamic_colors $HOME/cli-utils/set_dynamic_colors
+
+# Dev-tmux
+cp $DEFAULT_CONFORG_DIR/contrib/dev-tmux $HOME/cli-utils/dev-tmux
+
+# Shpotify
+cp $DEFAULT_CONFORG_DIR/contrib/spotify $HOME/cli-utils/spotify
 
 # Vim-plug
 cp contrib/vim-plug/plug.vim $HOME/.config/nvim/autoload/plug.vim
