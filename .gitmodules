@@ -22,3 +22,6 @@
 [submodule "contrib/find-cursor"]
 	path = contrib/find-cursor
 	url = https://github.com/arp242/find-cursor.git
+[submodule "contrib/shpotify"]
+	path = contrib/shpotify
+	url = git@github.com:Icermli/shpotify.git
