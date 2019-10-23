@@ -130,7 +130,7 @@ unset color_prompt force_color_prompt
 #     export TASKRC=$HOME/.taskrc_dark
 #   fi
 # fi
-# 
+#
 # if [ "$COLORTHEME" = dark ]; then
 #   if [ -f ~/cli-utils/promptline_dark ]; then
 #     source ~/cli-utils/promptline_dark
@@ -146,7 +146,7 @@ unset color_prompt force_color_prompt
 #     export TASKRC=$HOME/.taskrc_light
 #   fi
 # fi
-# 
+#
 # overwrite with external promptline
 if [ -f ~/cli-utils/promptline ]; then
   source ~/cli-utils/promptline
@@ -334,4 +334,3 @@ export PIP_REQUIRE_VIRTUALENV=false
 if [ -f ~/.cpanrc ]; then
   . ~/.cpanrc
 fi
-

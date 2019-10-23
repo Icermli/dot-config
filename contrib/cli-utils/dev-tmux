@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # new a tmux session with several windows
 
 session_name='dev'
