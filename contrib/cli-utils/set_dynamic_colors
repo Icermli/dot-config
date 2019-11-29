@@ -1,4 +1,48 @@
 #!/bin/sh
+# put the following the following plit file `com.set.dynamic.colors.plist` in the folder /Library/LaunchAgents
+# remember to change <username> to yours and prepare `set_dynamic_colors` `enter_the_dark` `enter_the_light`
+# in /Users/<username>/cli-utils/ folder, then run
+# # -w flag permanently adds the plist to the Launch Daemon
+# $ sudo launchctl load -w /Library/LaunchAgents/com.set.dynamic.colors.plist
+# if you want to remove it just run the following and `rm com.set.dynamic.colors.plist`
+# # -w flag permanently remove the plist to the Launch Daemon
+# $ sudo launchctl unload -w /Library/LaunchDaemons/com.startup.plist
+# ------------------------------------------------------------------------------------------------------------
+# <?xml version="1.0" encoding="UTF-8"?>
+# <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+# <plist version="1.0">
+# <dict>
+#     <key>Label</key>
+#     <string>com.set.dynamic.colors</string>
+#     <key>Program</key>
+#     <string>/Users/<username>/cli-utils/set_dynamic_colors</string>
+#     <key>RunAtLoad</key>
+#     <true/>
+#     <key>StartCalendarInterval</key>
+#     <array>
+#         <dict>
+#             <key>Hour</key>
+#             <integer>6</integer>
+#             <key>Minute</key>
+#             <integer>0</integer>
+#         </dict>
+#         <dict>
+#             <key>Hour</key>
+#             <integer>18</integer>
+#             <key>Minute</key>
+#             <integer>0</integer>
+#         </dict>
+#     </array>
+#     <key>UserName</key>
+#     <string><username></string>
+#     <key>StandardOutPath</key>
+#     <string>/tmp/com.set.dynamic.colors.stdout</string>
+#     <key>StandardErrorPath</key>
+#     <string>/tmp/com.set.dynamic.colors.stderr</string>
+# </dict>
+# </plist>
+#-------------------------------------------------------------------------------------------------------------
+
 
 currenttime=$(date +%H:%M)
 if [[ "$currenttime" > "17:59" ]] || [[ "$currenttime" < "05:59" ]]; then
