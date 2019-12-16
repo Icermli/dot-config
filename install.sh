@@ -94,6 +94,14 @@ function box_warn()
   tput sgr 0
 }
 
+function cecho()
+{
+    bold=$(tput bold);
+    green=$(tput setaf 2);
+    reset=$(tput sgr0);
+    echo $bold$green"$1"$reset;
+}
+
 function finish_up()
 {
   # Save the command only if the installer proceeds this far

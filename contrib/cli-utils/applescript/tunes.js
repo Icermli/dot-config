@@ -1,5 +1,5 @@
 let output = '';
-if (Application('iTunes').running()) {
+if (Application('Music').running()) {
     const track = Application('iTunes').currentTrack;
     const artist = track.artist();
     const title = track.name();
