@@ -240,18 +240,18 @@ setup_entry nvim-snips $DEFAULT_CONFORG_DIR/contrib/nvim $HOME/.config/nvim
 box_out "Adding final touches.."
 
 # Docker-cleanup
-cp $DEFAULT_CONFORG_DIR/contrib/docker-cleanup $HOME/cli-utils/docker-cleanup
+cp $DEFAULT_CONFORG_DIR/contrib/cli-utils/docker-cleanup $HOME/cli-utils/docker-cleanup
 
 # Set_dynamic_colors
-cp $DEFAULT_CONFORG_DIR/contrib/enter_the_dark $HOME/cli-utils/enter_the_dark
-cp $DEFAULT_CONFORG_DIR/contrib/enter_the_light $HOME/cli-utils/enter_the_light
-cp $DEFAULT_CONFORG_DIR/contrib/set_dynamic_colors $HOME/cli-utils/set_dynamic_colors
+cp $DEFAULT_CONFORG_DIR/contrib/cli-utils/enter_the_dark $HOME/cli-utils/enter_the_dark
+cp $DEFAULT_CONFORG_DIR/contrib/cli-utils/enter_the_light $HOME/cli-utils/enter_the_light
+cp $DEFAULT_CONFORG_DIR/contrib/cli-utils/set_dynamic_colors $HOME/cli-utils/set_dynamic_colors
 
 # Dev-tmux
-cp $DEFAULT_CONFORG_DIR/contrib/dev-tmux $HOME/cli-utils/dev-tmux
+cp $DEFAULT_CONFORG_DIR/contrib/cli-utils/dev-tmux $HOME/cli-utils/dev-tmux
 
 # Shpotify
-cp $DEFAULT_CONFORG_DIR/contrib/spotify $HOME/cli-utils/spotify
+cp $DEFAULT_CONFORG_DIR/contrib/shpotify/spotify $HOME/cli-utils/spotify
 
 # Vim-plug
 cp contrib/vim-plug/plug.vim $HOME/.config/nvim/autoload/plug.vim
@@ -260,7 +260,7 @@ cp contrib/vim-plug/plug.vim $HOME/.config/nvim/autoload/plug.vim
 cp contrib/vim-pyopencl/pyopencl.vim $HOME/.config/nvim/syntax/pyopencl.vim
 
 # Bash-insulter
-cp contrib/bash-insulter $HOME/cli-utils/
+cp contrib/bash-insulter/src/bash.command-not-found $HOME/cli-utils/
 
 if [[ $VERBOSE != 0 ]]; then
   set +o xtrace

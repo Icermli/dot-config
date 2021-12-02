@@ -338,7 +338,7 @@ let g:deoplete#enable_at_startup = 1
 " Disable auto-complete
 " let g:deoplete#disable_auto_complete = 1
 " Initialize input_patterns
-let g:deoplete#omni#input_patterns = {}
+" let g:deoplete#omni#input_patterns = {}
 " Alternatively, use Ctrl+l to manually complete
 inoremap <silent><expr><C-l> deoplete#mappings#manual_complete()
 
@@ -509,6 +509,8 @@ let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
 
 " Add plugins to &runtimepath
 call plug#end()
+
+call deoplete#custom#var("omni", "input_patterns", {})
 
 let g:promptline_preset = {
         \'a' : [ promptline#slices#python_virtualenv(), promptline#slices#conda_env() ],

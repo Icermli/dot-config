@@ -24,4 +24,4 @@
 	url = https://github.com/arp242/find-cursor.git
 [submodule "contrib/shpotify"]
 	path = contrib/shpotify
-	url = git@github.com:Icermli/shpotify.git
+	url = https://github.com/xiaonengmiao/shpotify.git
