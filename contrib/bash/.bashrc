@@ -109,14 +109,14 @@ fi
 #force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-        # We have color support; assume it's compliant with Ecma-48
-        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-        # a case would tend to support setf rather than setaf.)
-        color_prompt=yes
-    else
-        color_prompt=
-    fi
+  if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+    # We have color support; assume it's compliant with Ecma-48
+    # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+    # a case would tend to support setf rather than setaf.)
+    color_prompt=yes
+  else
+    color_prompt=
+  fi
 fi
 
 if [ "$color_prompt" = yes ]; then
@@ -143,7 +143,7 @@ unset color_prompt force_color_prompt
 #     export TASKRC=$HOME/.taskrc_dark
 #   fi
 # fi
-#
+# 
 # if [ "$COLORTHEME" = dark ]; then
 #   if [ -f ~/cli-utils/promptline_dark ]; then
 #     source ~/cli-utils/promptline_dark
@@ -159,7 +159,7 @@ unset color_prompt force_color_prompt
 #     export TASKRC=$HOME/.taskrc_light
 #   fi
 # fi
-#
+# 
 # overwrite with external promptline
 if [ -f ~/cli-utils/promptline ]; then
     source ~/cli-utils/promptline
@@ -194,6 +194,9 @@ if [ -x /usr/bin/dircolors ]; then
   eval "`dircolors -b $DIR_COLORS`"
 fi
 
+export CLICOLOR=1
+export LSCOLORS="Gxfxcxdxbxegedabagacad"
+
 # some more ls aliases
 alias ll='ls -alhF'
 alias la='ls -A'
@@ -216,18 +219,18 @@ export GPG_TTY=$(tty)
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-    if [ -f /usr/share/bash-completion/bash_completion ]; then
-      . /usr/share/bash-completion/bash_completion
-    elif [ -f /etc/bash_completion ]; then
-      . /etc/bash_completion
-    fi
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
 fi
 
 # brew install bash-completion
 if [[ $platform == 'darwin' ]]; then
-    if [ -f $(brew --prefix)/etc/bash_completion ]; then
-      . $(brew --prefix)/etc/bash_completion
-    fi
+  if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    . $(brew --prefix)/etc/bash_completion
+  fi
 fi
 
 # simple tmsu bash completion
@@ -268,13 +271,13 @@ fi
 # Load Spack if it is under $HOME
 export SPACK_ROOT=$HOME/spack
 if [ -f ${SPACK_ROOT}/share/spack/setup-env.sh ]; then
-    #echo Loading spack..
-    . ${SPACK_ROOT}/share/spack/setup-env.sh
-    #echo Loading spack.. Done.
-    #echo Loading environment modules..
-    MODULES_HOME=`spack location -i environment-modules`
-    source ${MODULES_HOME}/Modules/init/bash
-    #echo Loading environment modules.. Done.
+  #echo Loading spack..
+  . ${SPACK_ROOT}/share/spack/setup-env.sh
+  #echo Loading spack.. Done.
+  #echo Loading environment modules..
+  MODULES_HOME=`spack location -i environment-modules`
+  source ${MODULES_HOME}/Modules/init/bash
+  #echo Loading environment modules.. Done.
 fi
 
 # echo Loading mpi..
@@ -296,28 +299,28 @@ fi
 
 # Anaconda/Miniconda using alias instead of adding to PATH
 # See https://github.com/conda/conda/issues/4552
-# if [ -d ~/miniconda3/bin ]; then
-#     echo "Using miniconda3 via aliases"
-#     alias act="source $HOME/miniconda3/bin/activate"
-#     alias dact="source $HOME/miniconda3/bin/deactivate"
-#     alias conda="$HOME/miniconda3/bin/conda"
-# else
-#     if [ -d ~/anaconda/bin ]; then
-#         echo "Using anaconda via aliases"
-#         alias act="source $HOME/anaconda/bin/activate"
-#         alias dact="source $HOME/anaconda/bin/deactivate"
-#         alias conda="$HOME/anaconda/bin/conda"
-#   # else
-#   #   echo "Conda not found"
-#   else
-#      if [ -d ~/anaconda3/bin ]; then
-#         echo "Using anaconda via aliases"
-#         alias act="source $HOME/anaconda3/bin/activate"
-#         alias dact="source $HOME/anaconda3/bin/deactivate"
-#         alias conda="$HOME/anaconda3/bin/conda"
-#      fi
+#if [ -d ~/miniconda3/bin ]; then
+  # echo "Using miniconda3 via aliases"
+  #alias act="source $HOME/miniconda3/bin/activate"
+  #alias dact="source $HOME/miniconda3/bin/deactivate"
+ # alias conda="$HOME/miniconda3/bin/conda"
+#else
+ # if [ -d ~/anaconda/bin ]; then
+    # echo "Using anaconda via aliases"
+   # alias act="source $HOME/anaconda/bin/activate"
+  #  alias dact="source $HOME/anaconda/bin/deactivate"
+ #   alias conda="$HOME/anaconda/bin/conda"
+  # else
+    # echo "Conda not found"
+ # else
+#    if [ -d ~/anaconda3/bin ]; then
+      # echo "Using anaconda via aliases"
+      #alias act="source $HOME/anaconda3/bin/activate"
+      #alias dact="source $HOME/anaconda3/bin/deactivate"
+     # alias conda="$HOME/anaconda3/bin/conda"
 #    fi
-# fi
+#  fi
+#fi
 
 # bash-insulter (requires bash 4 to work)
 # For MacOS X, install bash 4 from `homebrew install bash`,
@@ -337,6 +340,7 @@ if [[ -z $TMUX ]]; then
   export PATH=$HOME/cli-utils:$PATH
   export PATH=$HOME/opt/usr/bin:$PATH
 fi
+
 
 export EDITOR="nvim"
 export VISUAL="nvim"

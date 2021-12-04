@@ -39,8 +39,8 @@ Plug 'xywei/vim-dealii-prm'
 " neovim-colors-solarized
 "--------------------------------------
 " using a fork that can use true color
-"Plug 'frankier/neovim-colors-solarized-truecolor-only'
-"syntax enable
+" Plug 'frankier/neovim-colors-solarized-truecolor-only'
+" syntax enable
 " For older neovim versions (<0.1.5), we need to
 " export NVIM_TUI_ENABLE_TRUE_COLOR=1
 " if exists("&termguicolors")
@@ -51,7 +51,7 @@ Plug 'xywei/vim-dealii-prm'
 "let g:solarized_menu=0
 "set background=dark " or dark
 " Custom settings
-"let g:solarized_contrast = “high”
+"let g:solarized_contrast = "high"
 "" two commands to switch between dark/light themes
 "command Dark :set background=dark
 "command Light :set background=light
@@ -63,7 +63,7 @@ Plug 'xywei/vim-dealii-prm'
 " Plug 'lifepillar/vim-solarized8'
 " let g:solarized_visibility = "high"
 " let g:solarized_diffmode = "high"
-"
+
 " NOTE: truecolor stuff does not work well with airline & tmuxline
 
 "" two commands to switch between dark/light themes
@@ -159,12 +159,12 @@ let g:ctrlp_working_path_mode = 'ra'
 " Ignore irrelevant files
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
-" let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-" let g:ctrlp_custom_ignore = {
-" \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-" \ 'file': '\v\.(exe|so|dll)$',
-" \ 'link': 'some_bad_symbolic_links',
-" \ }
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+let g:ctrlp_custom_ignore = {
+\ 'dir':  '\v[\/]\.(git|hg|svn)$',
+\ 'file': '\v\.(exe|so|dll)$',
+\ 'link': 'some_bad_symbolic_links',
+\ }
 
 "--------------------------------------
 " vim-easy-align
@@ -237,6 +237,10 @@ let g:javascript_conceal_static         = "•"
 let g:javascript_conceal_super          = "Ω"
 let g:javascript_conceal_arrow_function = "⇒"
 
+"--------------------------------------
+" semshi
+"--------------------------------------
+Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins' }
 
 "--------------------------------------
 " vim-fugitive
@@ -511,6 +515,7 @@ let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
 call plug#end()
 
 call deoplete#custom#var("omni", "input_patterns", {})
+call deoplete#custom#option('auto_complete_delay', 100)
 
 let g:promptline_preset = {
         \'a' : [ promptline#slices#python_virtualenv(), promptline#slices#conda_env() ],
