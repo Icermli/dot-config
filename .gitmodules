@@ -25,3 +25,6 @@
 [submodule "contrib/shpotify"]
 	path = contrib/shpotify
 	url = https://github.com/xiaonengmiao/shpotify.git
+[submodule "contrib/tmux-plugins/tpm"]
+	path = contrib/tmux-plugins/tpm
+	url = https://github.com/tmux-plugins/tpm.git
