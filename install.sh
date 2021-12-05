@@ -241,6 +241,8 @@ setup_entry promptline_light $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-ut
 setup_entry promptline_dark $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 setup_entry init.vim $DEFAULT_CONFORG_DIR/contrib/nvim $HOME/.config/nvim
 setup_entry nvim-snips $DEFAULT_CONFORG_DIR/contrib/nvim $HOME/.config/nvim
+setup_entry tpm $DEFAULT_CONFORG_DIR/contrib/tmux-plugins $HOME/.tmux/plugins
+setup_entry .tmux.conf $DEFAULT_CONFORG_DIR/contrib/tmux $HOME
 
 box_out "Adding final touches.."
 
