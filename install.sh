@@ -206,12 +206,14 @@ box_out "Setting up directory structure.."
   fi
   mkdir -p $HOME/.config;
   mkdir -p $HOME/.config/conforg;
-  mkdir -p $HOME/.config/nvim;
-  mkdir -p $HOME/.config/nvim/autoload;
-  mkdir -p $HOME/.config/nvim/syntax;
+  # mkdir -p $HOME/.config/nvim;
+  # mkdir -p $HOME/.config/nvim/autoload;
+  # mkdir -p $HOME/.config/nvim/syntax;
 
   mkdir -p $HOME/.config/ranger;
   mkdir -p $HOME/.config/ranger/colorschemes/;
+
+  mkdir -p $HOME/.tmux/plugins
 
   mkdir -p $HOME/cli-utils;
 )
@@ -229,6 +231,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 
 box_out "Setting up.."
 
+setup_entry .bashrc $DEFAULT_CONFORG_DIR/contrib/bash $HOME
 setup_entry powerlevel9k $DEFAULT_CONFORG_DIR/contrib $HOME/.oh-my-zsh/custom/themes
 setup_entry powerlevel10k $DEFAULT_CONFORG_DIR/contrib $HOME/.oh-my-zsh/custom/themes
 setup_entry .zshrc $DEFAULT_CONFORG_DIR/contrib/zsh $HOME
@@ -239,10 +242,11 @@ setup_entry applescript $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 setup_entry promptline $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 setup_entry promptline_light $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 setup_entry promptline_dark $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
-setup_entry init.vim $DEFAULT_CONFORG_DIR/contrib/nvim $HOME/.config/nvim
-setup_entry nvim-snips $DEFAULT_CONFORG_DIR/contrib/nvim $HOME/.config/nvim
-setup_entry tpm $DEFAULT_CONFORG_DIR/contrib/tmux-plugins $HOME/.tmux/plugins
+setup_entry nvim $DEFAULT_CONFORG_DIR/contrib/config $HOME/.config
+setup_entry fontconfig $DEFAULT_CONFORG_DIR/contrib/config $HOME/.config
+setup_entry tpm $DEFAULT_CONFORG_DIR/contrib/tmux-plugins $HOME/.tmux/plugin
 setup_entry .tmux.conf $DEFAULT_CONFORG_DIR/contrib/tmux $HOME
+
 
 box_out "Adding final touches.."
 
@@ -261,7 +265,7 @@ cp $DEFAULT_CONFORG_DIR/contrib/cli-utils/dev-tmux $HOME/cli-utils/dev-tmux
 cp $DEFAULT_CONFORG_DIR/contrib/shpotify/spotify $HOME/cli-utils/spotify
 
 # Vim-plug
-cp contrib/vim-plug/plug.vim $HOME/.config/nvim/autoload/plug.vim
+# cp contrib/vim-plug/plug.vim $HOME/.config/nvim/autoload/plug.vim
 
 # Vim-pyopencl
 cp contrib/vim-pyopencl/pyopencl.vim $HOME/.config/nvim/syntax/pyopencl.vim
