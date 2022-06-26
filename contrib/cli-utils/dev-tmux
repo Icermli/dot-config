@@ -13,8 +13,8 @@ tmux new-window -n 'lilac'
 tmux send-keys -t $session_name:'lilac'.1 "conda activate lilac" Enter "clear" Enter
 tmux split-window -v -p 35
 tmux send-keys -t $session_name:'lilac'.2 "conda activate lilac" Enter "clear" Enter
-tmux new-window -n 'opencv'
-tmux send-keys -t $session_name:'opencv' "conda activate opencv" Enter "clear" Enter
+tmux new-window -n 'cv'
+tmux send-keys -t $session_name:'cv' "conda activate cv" Enter "clear" Enter
 tmux new-window -n 'tf'
 tmux send-keys -t $session_name:'tf' "conda activate tf" Enter "clear" Enter
 tmux -2 attach-session -d
