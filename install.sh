@@ -287,8 +287,8 @@ echo "!*.py" >> $GITIGNORE_OUT
 
 # Jupyter notebook config
 # requires: jupyterlab, jupytext
-cd contrib/jupyter-nbconfig && sh ./setup.sh
-cd ../..
+# cd contrib/jupyter-nbconfig && sh ./setup.sh
+# cd ../..
 
 # TPM (auto update if exists)
 TPMPATH=$HOME/.tmux/plugins/tpm
