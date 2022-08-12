@@ -1,230 +1,284 @@
-export TERM="xterm-256color"
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# display UTF-8 filenames (e.g. Chinese)
+export LC_ALL=en_US.UTF-8  
+export LANG=en_US.UTF-8
 
-# Path to your oh-my-zsh installation.
-export ZSH="/Users/haohanli/.oh-my-zsh"
+alias protonmail-bridge='PASSWORD_STORE_DIR=$HOME/.config/protonmail-pass protonmail-bridge'
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
-DEFAULT_USER=$(whoami)
+alias lf=lfrun
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+export NEXTCLOUD_PHP_CONFIG=/etc/webapps/nextcloud/php.ini
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+PROFILE_STARTUP=false
+if [[ "$PROFILE_STARTUP" == true ]]; then
+    PS4=$'%D{%M%S%.} %N:%i> '
+    mkdir -p $HOME/tmp
+    exec 3>&2 2>$HOME/tmp/startlog.$$
+    setopt xtrace prompt_subst
+fi
 
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+export CONFORG_DIR=$HOME/.dot-config
+export CONDA_DIR=$HOME/miniconda3
+export CLI_UTILS_DIR=$HOME/cli-utils
+export SCRIPTS_DIR=$HOME/.scripts
 
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS=true
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git z zsh-syntax-highlighting)
-
-source $ZSH/oh-my-zsh.sh
-
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-#####################################################################################
-### Powerlevel 9k Settings - https://github.com/bhilburn/powerlevel9k - NOTE: I'm using powerlevel10k
-#####################################################################################
-
-prompt_zsh_showStatus(){
-	local color='%F{white}'
-  state=`osascript -e 'tell application "Spotify" to player state as string'`;
-  if [ $state = "playing" ]; then
-    artist=`osascript -e 'tell application "Spotify" to artist of current track as string'`;
-    track=`osascript -e 'tell application "Spotify" to name of current track as string'`;
-
-    echo -n "%{$color%}  $artist - $track " ;
-
-  fi
-}
-
-zsh_internet_signal(){
-  #source on quality levels - http://www.wireless-nets.com/resources/tutorials/define_SNR_values.html
-  #source on signal levels  - http://www.speedguide.net/faq/how-to-read-rssisignal-and-snrnoise-ratings-440
-	local signal=$(airport -I | grep agrCtlRSSI | awk '{print $2}' | sed 's/-//g')
-  local noise=$(airport -I | grep agrCtlNoise | awk '{print $2}' | sed 's/-//g')
-  local SNR=$(bc <<<"scale=2; $signal / $noise")
-
-  local net=$(curl -D- -o /dev/null -s http://www.google.com | grep HTTP/1.1 | awk '{print $2}')
-  local color='%F{yellow}'
-  local symbol="\uf197"
-
-  # Excellent Signal (5 bars)
-  if [[ ! -z "${signal// }" ]] && [[ $SNR -gt .40 ]] ;
-    then color='%F{blue}' ; symbol="\uf1eb" ;
-  fi
-
-  # Good Signal (3-4 bars)
-  if [[ ! -z "${signal// }" ]] && [[ ! $SNR -gt .40 ]] && [[ $SNR -gt .25 ]] ;
-    then color='%F{green}' ; symbol="\uf1eb" ;
-  fi
-
-  # Low Signal (2 bars)
-  if [[ ! -z "${signal// }" ]] && [[ ! $SNR -gt .25 ]] && [[ $SNR -gt .15 ]] ;
-    then color='%F{yellow}' ; symbol="\uf1eb" ;
-  fi
-
-  # Very Low Signal (1 bar)
-  if [[ ! -z "${signal// }" ]] && [[ ! $SNR -gt .15 ]] && [[ $SNR -gt .10 ]] ;
-    then color='%F{red}' ; symbol="\uf1eb" ;
-  fi
-
-  # No Signal - No Internet
-  if [[ ! -z "${signal// }" ]] && [[ ! $SNR -gt .10 ]] ;
-    then color='%F{red}' ; symbol="\uf011";
-  fi
-
-  if [[ -z "${signal// }" ]] && [[ "$net" -ne 200 ]] ;
-    then color='%F{red}' ; symbol="\uf011" ;
-  fi
-
-  # Ethernet Connection (no wifi, hardline)
-  if [[ -z "${signal// }" ]] && [[ "$net" -eq 200 ]] ;
-    then color='%F{blue}' ; symbol="\uf197" ;
-  fi
-
-  echo -n "%{$color%}$symbol " # \f1eb is wifi bars
-}
-
-POWERLEVEL9K_MODE="awesome-patched"
-POWERLEVEL9K_MODE='nerdfont-complete'
+POWERLEVEL9K_COLOR_SCHEME='dark'
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-POWERLEVEL9K_PROMPT_ADD_NEWLINE=false
-POWERLEVEL9K_SHORTEN_DIR_LENGTH=4
-POWERLEVEL9K_SHORTEN_STRATEGY="truncate_beginning"
-POWERLEVEL9K_RVM_BACKGROUND="black"
-POWERLEVEL9K_RVM_FOREGROUND="249"
-POWERLEVEL9K_RVM_VISUAL_IDENTIFIER_COLOR="red"
-POWERLEVEL9K_RVM_BACKGROUND="black"
-POWERLEVEL9K_RVM_FOREGROUND="249"
-POWERLEVEL9K_TIME_BACKGROUND="black"
-POWERLEVEL9K_TIME_FOREGROUND="249"
-POWERLEVEL9K_TIME_FORMAT="\UF43A %D{%I:%M  \UF133  %m.%d.%y}"
-POWERLEVEL9K_STATUS_VERBOSE=false
-POWERLEVEL9K_VCS_CLEAN_FOREGROUND='black'
-POWERLEVEL9K_VCS_CLEAN_BACKGROUND='green'
-POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND='black'
-POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='yellow'
-POWERLEVEL9K_VCS_MODIFIED_FOREGROUND='white'
-POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='black'
-POWERLEVEL9K_VCS_UNTRACKED_ICON='\u25CF'
-POWERLEVEL9K_VCS_UNSTAGED_ICON='\u00b1'
-POWERLEVEL9K_VCS_INCOMING_CHANGES_ICON='\u2193'
-POWERLEVEL9K_VCS_OUTGOING_CHANGES_ICON='\u2191'
-POWERLEVEL9K_VCS_COMMIT_ICON="\uf417"
-POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND='black'
-POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND='blue'
-POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
-POWERLEVEL9K_FOLDER_ICON=''
-POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE=true
-POWERLEVEL9K_STATUS_VERBOSE=false
-POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="%F{blue}\u256D\u2500%f"
-POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%F{blue}\u2570\uf460%K{white}%F{black} `date +%T` %f%k%F{white}%f "
-POWERLEVEL9K_CUSTOM_DOCKER_SIGNAL="zsh_docker_signal"
-POWERLEVEL9K_CUSTOM_INTERNET_SIGNAL="zsh_internet_signal"
-POWERLEVEL9K_BATTERY_CHARGING='yellow'
-POWERLEVEL9K_BATTERY_CHARGED='green'
-POWERLEVEL9K_BATTERY_DISCONNECTED='$DEFAULT_COLOR'
-POWERLEVEL9K_BATTERY_LOW_THRESHOLD='10'
-POWERLEVEL9K_BATTERY_LOW_COLOR='red'
-POWERLEVEL9K_BATTERY_ICON='\uf1e6'
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_internet_signal custom_docker_signal os_icon dir battery context vcs root_indicator dir_writable)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status ip ram load background_jobs zsh_showStatus host user)
-HIST_STAMPS="mm/dd/yyyy"
-DISABLE_UPDATE_PROMPT=true
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon dir vcs anaconda virtualenv)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs)
 
-#################################################
-### Colorize Man pages
-#################################################
+POWERLEVEL9K_SHORTEN_DELIMITER=''
+POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
 
-export MANROFFOPT='-c'
-export LESS_TERMCAP_mb=$(tput bold; tput setaf 2)
-export LESS_TERMCAP_md=$(tput bold; tput setaf 6)
-export LESS_TERMCAP_me=$(tput sgr0)
-export LESS_TERMCAP_so=$(tput bold; tput setaf 3; tput setab 4)
-export LESS_TERMCAP_se=$(tput rmso; tput sgr0)
-export LESS_TERMCAP_us=$(tput smul; tput bold; tput setaf 7)
-export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
-export LESS_TERMCAP_mr=$(tput rev)
-export LESS_TERMCAP_mh=$(tput dim)
-export PATH="/usr/local/sbin:$PATH"
+POWERLEVEL9K_OS_ICON_BACKGROUND='248'
+POWERLEVEL9K_OS_ICON_FOREGROUND='237'
 
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+POWERLEVEL9K_DIR_ETC_BACKGROUND='166'
+POWERLEVEL9K_DIR_ETC_FOREGROUND='237'
+POWERLEVEL9K_DIR_HOME_BACKGROUND='72'
+POWERLEVEL9K_DIR_HOME_FOREGROUND='237'
+POWERLEVEL9K_DIR_DEFAULT_BACKGROUND='132'
+POWERLEVEL9K_DIR_DEFAULT_FOREGROUND='237'
+POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND='66'
+POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND='237'
+
+POWERLEVEL9K_ANACONDA_BACKGROUND="109"
+POWERLEVEL9K_ANACONDA_FOREGROUND="237"
+
+POWERLEVEL9K_VIRTUALENV_BACKGROUND="109"
+POWERLEVEL9K_VIRTUALENV_FOREGROUND="237"
+
+POWERLEVEL9K_VCS_CLEAN_BACKGROUND='106'
+POWERLEVEL9K_VCS_CLEAN_FOREGROUND='237'
+
+POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='214'
+POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND='237'
+
+POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='167'
+POWERLEVEL9K_VCS_MODIFIED_FOREGROUND='237'
+
+POWERLEVEL9K_STATUS_OK_FOREGROUND='237'
+POWERLEVEL9K_STATUS_ERROR_FOREGROUND='124'
+POWERLEVEL9K_STATUS_OK_BACKGROUND='248'
+POWERLEVEL9K_STATUS_ERROR_BACKGROUND='248'
+
+POWERLEVEL9K_BACKGROUND_JOBS_FOREGROUND='237'
+POWERLEVEL9K_BACKGROUND_JOBS_BACKGROUND='166'
+
+source  $CONFORG_DIR/contrib/powerlevel10k/powerlevel10k.zsh-theme
+
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+case $- in
+    *i*) ;;
+    *) return;;
+esac
+
+bindkey -e
+
+export GPG_TTY=$(tty)
+
+source  /etc/profile
+
+source  $HOME/.bash_profile
+
+export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+
+if [ -f $CONFORG_DIR/contrib/bash-insulter/src/bash.command-not-found ]; then
+    source $CONFORG_DIR/contrib/bash-insulter/src/bash.command-not-found
+fi
+
+if [ -f $CONDA_DIR/etc/profile.d/conda.sh ]; then
+    . $CONDA_DIR/etc/profile.d/conda.sh
+fi
+
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+
+export JUPYTERLAB_DIR=$HOME/.local/share/jupyter/lab
+
+export PATH=$HOME/.local/bin:$PATH
+export PATH=$CLI_UTILS_DIR:$PATH
+export PATH=$SCRIPTS_DIR:$PATH
+
+export PATH="$HOME/.cargo/bin:$PATH 
+export PATH="$HOME/.radicle/bin:$PATH 
+
+export MANPAGER="sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu' \
+    -c 'nnoremap i <nop>' \
+    -c 'nnoremap <Space> <C-f>' \
+    -c 'noremap q :quit<CR>' -\""
+
+export EDITOR="nvim"
+export VISUAL="nvim"
+
+export _MENU_THEME=legacy
+
+export TERM=screen-256color
+
+export PIP_REQUIRE_VIRTUALENV=false
+
+autoload zkbd
+[[ ! -f ${ZDOTDIR:-$HOME}/.zkbd/$TERM-$VENDOR-$OSTYPE ]] && zkbd
+source ${ZDOTDIR:-$HOME}/.zkbd/$TERM-$VENDOR-$OSTYPE
+
+[[ -n ${key[Backspace]} ]] && bindkey "${key[Backspace]}" backward-delete-char
+[[ -n ${key[Insert]} ]] && bindkey "${key[Insert]}" overwrite-mode
+[[ -n ${key[Home]} ]] && bindkey "${key[Home]}" beginning-of-line
+[[ -n ${key[PageUp]} ]] && bindkey "${key[PageUp]}" up-line-or-history
+[[ -n ${key[Delete]} ]] && bindkey "${key[Delete]}" delete-char
+[[ -n ${key[End]} ]] && bindkey "${key[End]}" end-of-line
+[[ -n ${key[PageDown]} ]] && bindkey "${key[PageDown]}" down-line-or-history
+[[ -n ${key[Up]} ]] && bindkey "${key[Up]}" up-line-or-search
+[[ -n ${key[Left]} ]] && bindkey "${key[Left]}" backward-char
+[[ -n ${key[Down]} ]] && bindkey "${key[Down]}" down-line-or-search
+[[ -n ${key[Right]} ]] && bindkey "${key[Right]}" forward-char
+
+SAVEHIST=3153600000            # limit of the saved history = 3600 * 24 * 365 * 100
+HISTFILE=~/.zsh_history
+
+setopt share_history           # share history between all sessions
+setopt extended_history        # :start:elapsed;command format
+setopt inc_append_history      # write to the history file immediately, not when the shell exits.
+
+setopt hist_ignore_dups        # don't record repeated commands
+setopt hist_ignore_all_dups    # when a new dup is recorded, delete the old one
+setopt hist_reduce_blanks      # remove superfluous blanks
+
+# For privacy and security
+setopt hist_ignore_space       # don't record an entry starting with a space
+setopt hist_verify             # don't execute immediately upon expansion
+
+autoload -Uz compinit
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+compinit
+_comp_options+=(globdots)
+
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey -v '^?' backward-delete-char
+
+GIT_COMPLETION_ZSH=/usr/share/git/completion/git-completion.zsh
+if [ -f $GIT_COMPLETION_ZSH ]; then
+    zstyle ':completion:*:*:git:*' script $GIT_COMPLETION_ZSH
+fi
+
+fpath+=$CONFORG_DIR/contrib/conda-zsh-completion
+compinit conda
+zstyle ':completion::complete:*' use-cache 1
+
+compctl -m npx
+
+GITA_COMPLETION_ZSH=$CONFORG_DIR/contrib/gita/.gita-completion.zsh
+if [ -f $GITA_COMPLETION_ZSH ]; then
+    zstyle ':completion:*:*:git:*' script $GITA_COMPLETION_ZSH
+fi
+
+case `uname` in
+    Darwin)
+        # commands for OS X go here
+        # alias ls='gls --color=auto'
+        # alias dir='gdir --color=auto'
+        # alias vdir='gvdir --color=auto'
+        alias ls='ls --color=auto'
+        alias dir='dir --color=auto'
+        alias vdir='vdir --color=auto'
+
+        alias grep='grep --color=auto'
+        alias fgrep='fgrep --color=auto'
+        alias egrep='egrep --color=auto'
+        alias ctags='/usr/local/bin/ctags'
+        ;;
+    Linux)
+        # commands for Linux go here
+        alias ls='ls --color=auto'
+        alias dir='dir --color=auto'
+        alias vdir='vdir --color=auto'
+
+        alias grep='grep --color=auto'
+        alias fgrep='fgrep --color=auto'
+        alias egrep='egrep --color=auto'
+        ;;
+    FreeBSD)
+        # commands for FreeBSD go here
+        ;;
+esac
+
+alias ll='ls -alhF'
+alias la='ls -a'
+alias l='ls -F'
+
+alias c='conda'
+alias ca='conda activate'
+
+alias icat='kitty +kitten icat'
+
+alias vi='nvim'
+alias vim='nvim'
+
+alias emacs='SHELL=/bin/bash LC_CTYPE=zh_CN.UTF-8 emacs'
+alias ec='emacsclient -n -c'
+
+alias t='task'
+
+alias tmux='tmux -u'
+
+alias ta='tmux attach -t'
+alias tad='tmux attach -d -t'
+alias ts='tmux new-session -s'
+alias tl='tmux list-sessions'
+alias tksv='tmux kill-server'
+alias tkss='tmux kill-session -t'
+
+alias gg='grep -rn'
+
+autoload -U zcalc
+function __calc_plugin {
+    zcalc -e "$*"
+}
+aliases[calc]='noglob __calc_plugin'
+# aliases[=]='noglob __calc_plugin'
+
+alias kk='kitty -1'
+
+LS_COLORS=$(<$HOME/.config/conforg/dircolors)
+
+zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
+
+source  /usr/share/fzf/completion.zsh
+
+source  /usr/share/fzf/key-bindings.zsh
+
+for dump in $HOME/.zcompdump(N.mh+24); do
+    # echo "Updating completion cache.."
+    compinit
+    compdump
+done
+
+compinit -C
+
+if type "kitty" > /dev/null; then
+    kitty + complete setup zsh | source /dev/stdin
+fi
+
+if [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+    source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+if [ -f /usr/share/nvm/init-nvm.sh ]; then
+    source /usr/share/nvm/init-nvm.sh
+fi
+
+if [[ "$PROFILE_STARTUP" == true ]]; then
+    unsetopt xtrace
+    exec 2>&3 3>&-
+fi
+
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

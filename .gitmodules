@@ -28,3 +28,6 @@
 [submodule "contrib/tmux-plugins/tpm"]
 	path = contrib/tmux-plugins/tpm
 	url = https://github.com/tmux-plugins/tpm.git
+[submodule "contrib/conda-zsh-completion"]
+	path = contrib/conda-zsh-completion
+	url = https://github.com/conda-incubator/conda-zsh-completion.git
