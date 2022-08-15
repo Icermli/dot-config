@@ -367,3 +367,5 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

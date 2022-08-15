@@ -17,7 +17,7 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
 fi
 
 export CONFORG_DIR=$HOME/.dot-config
-export CONDA_DIR=$HOME/miniconda3
+export CONDA_DIR=$HOME/anaconda3
 export CLI_UTILS_DIR=$HOME/cli-utils
 export SCRIPTS_DIR=$HOME/.scripts
 
@@ -68,7 +68,7 @@ POWERLEVEL9K_STATUS_ERROR_BACKGROUND='248'
 POWERLEVEL9K_BACKGROUND_JOBS_FOREGROUND='237'
 POWERLEVEL9K_BACKGROUND_JOBS_BACKGROUND='166'
 
-source  $CONFORG_DIR/contrib/powerlevel10k/powerlevel10k.zsh-theme
+source $CONFORG_DIR/contrib/powerlevel10k/powerlevel10k.zsh-theme
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
@@ -121,9 +121,9 @@ export TERM=screen-256color
 
 export PIP_REQUIRE_VIRTUALENV=false
 
-autoload zkbd
-[[ ! -f ${ZDOTDIR:-$HOME}/.zkbd/$TERM-$VENDOR-$OSTYPE ]] && zkbd
-source ${ZDOTDIR:-$HOME}/.zkbd/$TERM-$VENDOR-$OSTYPE
+# autoload zkbd
+# [[ ! -f ${ZDOTDIR:-$HOME}/.zkbd/$TERM-$VENDOR-$OSTYPE ]] && zkbd
+# source ${ZDOTDIR:-$HOME}/.zkbd/$TERM-$VENDOR-$OSTYPE
 
 [[ -n ${key[Backspace]} ]] && bindkey "${key[Backspace]}" backward-delete-char
 [[ -n ${key[Insert]} ]] && bindkey "${key[Insert]}" overwrite-mode
@@ -182,13 +182,10 @@ fi
 
 case `uname` in
     Darwin)
-        # commands for OS X go here
-        # alias ls='gls --color=auto'
-        # alias dir='gdir --color=auto'
-        # alias vdir='gvdir --color=auto'
-        alias ls='ls --color=auto'
-        alias dir='dir --color=auto'
-        alias vdir='vdir --color=auto'
+        commands for OS X go here
+        alias ls='gls --color=auto'
+        alias dir='gdir --color=auto'
+        alias vdir='gvdir --color=auto'
 
         alias grep='grep --color=auto'
         alias fgrep='fgrep --color=auto'
@@ -247,13 +244,15 @@ aliases[calc]='noglob __calc_plugin'
 
 alias kk='kitty -1'
 
-LS_COLORS=$(<$HOME/.config/conforg/dircolors)
+# LS_COLORS=$(<$HOME/.config/conforg/dircolors)
 
-zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
+# zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 
-source  /usr/share/fzf/completion.zsh
+export LSCOLORS="Gxfxcxdxbxegedabagacad"
 
-source  /usr/share/fzf/key-bindings.zsh
+source /opt/homebrew/opt/fzf/shell/completion.zsh
+
+source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
 
 for dump in $HOME/.zcompdump(N.mh+24); do
     # echo "Updating completion cache.."
