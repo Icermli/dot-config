@@ -83,7 +83,8 @@ export GPG_TTY=$(tty)
 
 source  /etc/profile
 
-source  $HOME/.bash_profile
+[[ ! -f ~/.bash_profile ]] || source $HOME/.bash_profile
+[[ ! -f ~/.profile ]] || source $HOME/.profile
 
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
 
@@ -104,8 +105,8 @@ export PATH=$HOME/.local/bin:$PATH
 export PATH=$CLI_UTILS_DIR:$PATH
 export PATH=$SCRIPTS_DIR:$PATH
 
-export PATH="$HOME/.cargo/bin:$PATH 
-export PATH="$HOME/.radicle/bin:$PATH 
+export PATH=$HOME/.cargo/bin:$PATH 
+export PATH=$HOME/.radicle/bin:$PATH 
 
 export MANPAGER="sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu' \
     -c 'nnoremap i <nop>' \
@@ -182,7 +183,7 @@ fi
 
 case `uname` in
     Darwin)
-        commands for OS X go here
+        # commands for OS X go here
         alias ls='gls --color=auto'
         alias dir='gdir --color=auto'
         alias vdir='gvdir --color=auto'
@@ -246,9 +247,11 @@ alias kk='kitty -1'
 
 # LS_COLORS=$(<$HOME/.config/conforg/dircolors)
 
-# zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
+zstyle ':completion:*' list-colors "${(@s.:.)}LS_COLORS"
 
-export LSCOLORS="Gxfxcxdxbxegedabagacad"
+# export LSCOLORS="Gxfxcxdxbxegedabagacad"
+
+export GPG_TTY=$(tty)
 
 source /opt/homebrew/opt/fzf/shell/completion.zsh
 
