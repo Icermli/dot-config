@@ -84,7 +84,6 @@ export GPG_TTY=$(tty)
 source  /etc/profile
 
 [[ ! -f ~/.bash_profile ]] || source $HOME/.bash_profile
-[[ ! -f ~/.profile ]] || source $HOME/.profile
 
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
 
@@ -245,7 +244,7 @@ aliases[calc]='noglob __calc_plugin'
 
 alias kk='kitty -1'
 
-# LS_COLORS=$(<$HOME/.config/conforg/dircolors)
+LS_COLORS=$(<$CONFORG_DIR/contrib/dircolors-solarized/dircolors.256dark)
 
 zstyle ':completion:*' list-colors "${(@s.:.)}LS_COLORS"
 
