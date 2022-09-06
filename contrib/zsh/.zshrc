@@ -17,7 +17,7 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
 fi
 
 export CONFORG_DIR=$HOME/.dot-config
-export CONDA_DIR=$HOME/anaconda3
+export CONDA_DIR=$HOME/opt/miniconda3
 export CLI_UTILS_DIR=$HOME/cli-utils
 export SCRIPTS_DIR=$HOME/.scripts
 
@@ -92,7 +92,7 @@ if [ -f $CONFORG_DIR/contrib/bash-insulter/src/bash.command-not-found ]; then
 fi
 
 if [ -f $CONDA_DIR/etc/profile.d/conda.sh ]; then
-    . $CONDA_DIR/etc/profile.d/conda.sh
+# . $CONDA_DIR/etc/profile.d/conda.sh  # commented out by conda initialize
 fi
 
 export GOPATH=$HOME/go
@@ -283,3 +283,19 @@ fi
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/opt/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/opt/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/opt/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/opt/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
