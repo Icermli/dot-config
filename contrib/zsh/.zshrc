@@ -17,7 +17,7 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
 fi
 
 export CONFORG_DIR=$HOME/.dot-config
-export CONDA_DIR=$HOME/opt/miniconda3
+export CONDA_DIR=$HOME/miniconda3
 export CLI_UTILS_DIR=$HOME/cli-utils
 export SCRIPTS_DIR=$HOME/.scripts
 
@@ -252,9 +252,9 @@ zstyle ':completion:*' list-colors "${(@s.:.)}LS_COLORS"
 
 export GPG_TTY=$(tty)
 
-source /opt/homebrew/opt/fzf/shell/completion.zsh
+source /home/haohan/.local/share/fzf/shell/completion.zsh
 
-source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+source /home/haohan/.local/share/fzf/shell/key-bindings.zsh
 
 for dump in $HOME/.zcompdump(N.mh+24); do
     # echo "Updating completion cache.."
@@ -286,14 +286,14 @@ fi
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/haohan/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/opt/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/opt/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/haohan/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/haohan/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/opt/miniconda3/bin:$PATH"
+        export PATH="/home/haohan/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
