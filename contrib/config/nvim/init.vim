@@ -195,8 +195,8 @@ nnoremap <silent> <leader>lW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 
 nnoremap <silent> <leader>dh    <cmd>lua vim.diagnostic.open_float()<CR>
 nnoremap <silent> <leader>dD    <cmd>lua vim.diagnostic.set_loclist()<CR>
-nnoremap <silent> <leader>dk    <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-nnoremap <silent> <leader>dj    <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+nnoremap <silent> <leader>dk    <cmd>lua vim.diagnostic.goto_prev()<CR>
+nnoremap <silent> <leader>dj    <cmd>lua vim.diagnostic.goto_next()<CR>
 
 set omnifunc=syntaxcomplete#Complete
 autocmd Filetype go setlocal omnifunc=v:lua.vim.lsp.omnifunc
