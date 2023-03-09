@@ -81,9 +81,11 @@ bindkey -e
 
 export GPG_TTY=$(tty)
 
-source  /etc/profile
+source /etc/profile
 
-[[ ! -f ~/.bash_profile ]] || source $HOME/.bash_profile
+if [[ -z $TMUX ]]; then
+    [[ ! -f ~/.bash_profile ]] || source $HOME/.bash_profile
+fi
 
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
 
@@ -96,16 +98,17 @@ if [ -f $CONDA_DIR/etc/profile.d/conda.sh ]; then
 fi
 
 export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
-
 export JUPYTERLAB_DIR=$HOME/.local/share/jupyter/lab
+if [[ -z $TMUX ]]; then
+    export PATH=$PATH:$GOPATH/bin
 
-export PATH=$HOME/.local/bin:$PATH
-export PATH=$CLI_UTILS_DIR:$PATH
-export PATH=$SCRIPTS_DIR:$PATH
+    export PATH=$HOME/.local/bin:$PATH
+    export PATH=$CLI_UTILS_DIR:$PATH
+    export PATH=$SCRIPTS_DIR:$PATH
 
-export PATH=$HOME/.cargo/bin:$PATH 
-export PATH=$HOME/.radicle/bin:$PATH 
+    export PATH=$HOME/.cargo/bin:$PATH 
+    export PATH=$HOME/.radicle/bin:$PATH 
+fi
 
 export MANPAGER="sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu' \
     -c 'nnoremap i <nop>' \
@@ -253,7 +256,6 @@ zstyle ':completion:*' list-colors "${(@s.:.)}LS_COLORS"
 export GPG_TTY=$(tty)
 
 source /opt/homebrew/opt/fzf/shell/completion.zsh
-
 source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
 
 for dump in $HOME/.zcompdump(N.mh+24); do
@@ -292,7 +294,7 @@ if [ $? -eq 0 ]; then
 else
     if [ -f "/opt/miniconda3/etc/profile.d/conda.sh" ]; then
         . "/opt/miniconda3/etc/profile.d/conda.sh"
-    else
+    elif [[ -z $TMUX ]]; then
         export PATH="/opt/miniconda3/bin:$PATH"
     fi
 fi

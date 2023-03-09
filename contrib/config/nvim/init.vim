@@ -52,9 +52,15 @@ Plug 'tpope/vim-rhubarb'
 Plug 'shumphrey/fugitive-gitlab.vim'
 
 Plug 'neovim/nvim-lsp'
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'
+Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+Plug 'j-hui/fidget.nvim'
+Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'TimUntersberger/neogit'
 
-Plug 'nvim-lua/completion-nvim'
+Plug 'nvim-lua/plenary.nvim'
 
 Plug 'junegunn/fzf', { 'dir': '~/.local/share/fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -151,39 +157,39 @@ let g:UltiSnipsListSnippets="<c-u>"
 let g:UltiSnipsEditSplit="vertical"
 
 lua <<EOF
+require("mason").setup()
+local mason_lspconfig = require("mason-lspconfig")
 local lsp_config = require("lspconfig")
-local lsp_completion = require("completion")
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+vim.g.coq_settings = {
+  auto_start = true,
+}
+local coq = require("coq")
 
-local general_on_attach = function(client, bufnr)
-  if client.server_capabilities.completion then
-    lsp_completion.on_attach(client, bufnr)
-  end
-end
+require"fidget".setup{}
 
-lsp_config["pyright"].setup{
-  filetypes = {"python", "pyopencl"};
-  on_attach = general_on_attach;
+mason_lspconfig.setup_handlers({
+    function (server_name) -- default handler
+        require("lspconfig")[server_name].setup({
+            coq.lsp_ensure_capabilities({ on_attach = general_on_attach, })
+        })
+    end,
+})
+
+vim.opt.list = true
+vim.opt.listchars:append "space:⋅"
+vim.opt.listchars:append "eol:↴"
+require("indent_blankline").setup {
+    space_char_blankline = " ",
 }
 
-local servers = {"html", "cssls", "gopls", "tsserver", "ccls", "texlab"}
-
--- Setup other basic lsp servers
-for _, server in ipairs(servers) do
-  lsp_config[server].setup {
-    -- Add capabilities
-    capabilities = capabilities,
-    on_attach = general_on_attach,
-    flags = {
-        debounce_text_changes = 150,
-        }
-  }
-end
+local neogit = require("neogit")
+neogit.setup {}
 EOF
 
-nnoremap <silent> <leader>ld    <cmd>lua vim.lsp.buf.declaration()<CR>
+nnoremap <silent> <leader>lc    <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap <silent> <leader>li    <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> <leader>lc    <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> <leader>ld    <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> <c-]>         <cmd>lua vim.lsp.buf.definition()<CR>
 
 nnoremap <silent> <leader>lh    <cmd>lua vim.lsp.buf.hover()<CR>
@@ -194,7 +200,7 @@ nnoremap <silent> <leader>lF    <cmd>lua vim.lsp.buf.document_symbol()<CR>
 nnoremap <silent> <leader>lW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 
 nnoremap <silent> <leader>dh    <cmd>lua vim.diagnostic.open_float()<CR>
-nnoremap <silent> <leader>dD    <cmd>lua vim.diagnostic.set_loclist()<CR>
+nnoremap <silent> <leader>dD    <cmd>lua vim.diagnostic.setloclist()<CR>
 nnoremap <silent> <leader>dk    <cmd>lua vim.diagnostic.goto_prev()<CR>
 nnoremap <silent> <leader>dj    <cmd>lua vim.diagnostic.goto_next()<CR>
 
