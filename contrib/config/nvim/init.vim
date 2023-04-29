@@ -46,7 +46,6 @@ Plug 'Raimondi/delimitMate'
 Plug 'sbdchd/neoformat'
 
 Plug 'mbbill/undotree'
-Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'shumphrey/fugitive-gitlab.vim'
@@ -56,6 +55,8 @@ Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
+Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
 Plug 'j-hui/fidget.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'TimUntersberger/neogit'
@@ -150,12 +151,6 @@ autocmd FileType apache setlocal commentstring=#\ %s
 
 let delimitMate_autoclose = 0
 
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-let g:UltiSnipsListSnippets="<c-u>"
-let g:UltiSnipsEditSplit="vertical"
-
 lua <<EOF
 require("mason").setup()
 local mason_lspconfig = require("mason-lspconfig")
@@ -163,6 +158,12 @@ local lsp_config = require("lspconfig")
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 vim.g.coq_settings = {
   auto_start = true,
+  keymap = {
+    recommended = true,
+    pre_select = true,
+    bigger_preview = '<c-l>',
+    manual_complete = '<c-q>',
+  },
 }
 local coq = require("coq")
 
@@ -207,10 +208,6 @@ nnoremap <silent> <leader>dj    <cmd>lua vim.diagnostic.goto_next()<CR>
 set omnifunc=syntaxcomplete#Complete
 autocmd Filetype go setlocal omnifunc=v:lua.vim.lsp.omnifunc
 autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
-
-set completeopt=menuone,noinsert,noselect
-let g:completion_enable_snippet = 'UltiSnips'
-let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
 
 set shortmess+=c
 
@@ -393,9 +390,6 @@ let g:tmux_navigator_no_mappings = 1
 if (executable('pbcopy') || executable('xclip') || executable('xsel')) && has('clipboard')
   set clipboard^=unnamed,unnamedplus
 endif
-
-set runtimepath+=$HOME/.conforg/contrib/nvim-snips
-let g:UltiSnipsSnippetDirectories=[$HOME.'/.conforg/contrib/nvim-snips']
 
 if s:uname == "Darwin\n"
   let g:python_host_prog='/usr/local/bin/python2'
