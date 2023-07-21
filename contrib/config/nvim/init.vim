@@ -35,6 +35,7 @@ let g:vim_markdown_folding_disabled = 1
 
 Plug 'mattn/emmet-vim'
 
+Plug 'ryanoasis/vim-devicons'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'majutsushi/tagbar'
 let g:tagbar_file_size_limit = 10000
@@ -60,6 +61,8 @@ Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
 Plug 'j-hui/fidget.nvim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'TimUntersberger/neogit'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'folke/trouble.nvim'
 
 Plug 'nvim-lua/plenary.nvim'
 
@@ -222,10 +225,37 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 )
 EOF
 
-call sign_define("DiagnosticSignError", {"text" : "🔥", "texthl" : "DiagnosticSignError"})
-call sign_define("DiagnosticSignWarning", {"text" : "👻", "texthl" : "DiagnosticSignWarning"})
-call sign_define("DiagnosticSignInformation", {"text" : "👽", "texthl" : "DiagnosticSignInformation"})
-call sign_define("DiagnosticSignHint", {"text" : "🦄", "texthl" : "DiagnosticSignHint"})
+call sign_define("DiagnosticSignError", {"text" : "", "texthl" : "DiagnosticSignError"})
+call sign_define("DiagnosticSignWarning", {"text" : "", "texthl" : "DiagnosticSignWarning"})
+call sign_define("DiagnosticSignInformation", {"text" : "", "texthl" : "DiagnosticSignInformation"})
+call sign_define("DiagnosticSignHint", {"text" : "", "texthl" : "DiagnosticSignHint"})
+
+" call sign_define("DiagnosticSignError", {"text" : "🔥", "texthl" : "DiagnosticSignError"})
+" call sign_define("DiagnosticSignWarning", {"text" : "👻", "texthl" : "DiagnosticSignWarning"})
+" call sign_define("DiagnosticSignInformation", {"text" : "👽", "texthl" : "DiagnosticSignInformation"})
+" call sign_define("DiagnosticSignHint", {"text" : "🦄", "texthl" : "DiagnosticSignHint"})
+
+lua <<EOF
+require'nvim-web-devicons'.setup { 
+}
+require("trouble").setup {
+  signs = {
+    -- icons / text used for a diagnostic
+    error = "",
+    warning = "",
+    hint = "",
+    information = "",
+  },
+  use_diagnostic_signs = false -- enabling this will use the signs defined in your lsp client
+}
+EOF
+
+nnoremap <leader>xx <cmd>TroubleToggle<cr>
+nnoremap <leader>xw <cmd>TroubleToggle workspace_diagnostics<cr>
+nnoremap <leader>xd <cmd>TroubleToggle document_diagnostics<cr>
+nnoremap <leader>xq <cmd>TroubleToggle quickfix<cr>
+nnoremap <leader>xl <cmd>TroubleToggle loclist<cr>
+nnoremap gR <cmd>TroubleToggle lsp_references<cr>
 
 " Emmet shortcuts
 let g:user_emmet_mode='n'  " only enable normal mode functions

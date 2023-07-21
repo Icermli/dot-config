@@ -93,9 +93,9 @@ if [ -f $CONFORG_DIR/contrib/bash-insulter/src/bash.command-not-found ]; then
     source $CONFORG_DIR/contrib/bash-insulter/src/bash.command-not-found
 fi
 
-if [ -f $CONDA_DIR/etc/profile.d/conda.sh ]; then
+# if [ -f $CONDA_DIR/etc/profile.d/conda.sh ]; then
 # . $CONDA_DIR/etc/profile.d/conda.sh  # commented out by conda initialize
-fi
+# fi
 
 export GOPATH=$HOME/go
 export JUPYTERLAB_DIR=$HOME/.local/share/jupyter/lab
@@ -255,8 +255,13 @@ zstyle ':completion:*' list-colors "${(@s.:.)}LS_COLORS"
 
 export GPG_TTY=$(tty)
 
-source /opt/homebrew/opt/fzf/shell/completion.zsh
-source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+if [ -f /opt/homebrew/opt/fzf/shell/completion.zsh ]; then
+    source /opt/homebrew/opt/fzf/shell/completion.zsh
+fi
+
+if [ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]; then
+    source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+fi
 
 for dump in $HOME/.zcompdump(N.mh+24); do
     # echo "Updating completion cache.."
@@ -270,8 +275,12 @@ if type "kitty" > /dev/null; then
     kitty + complete setup zsh | source /dev/stdin
 fi
 
-if [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
-    source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+    source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+if [ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
+    source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
 
 if [ -f /usr/share/nvm/init-nvm.sh ]; then
