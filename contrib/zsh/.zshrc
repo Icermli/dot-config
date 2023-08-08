@@ -295,6 +295,16 @@ fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+_fzf_comprun() {
+  local command=$1
+  shift
+
+  case "$command" in
+    cd)           fzf "$@" --preview 'tree -C {} | head -200' ;;
+    *)            fzf "$@" ;;
+  esac
+}
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/opt/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
