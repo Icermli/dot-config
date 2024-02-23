@@ -58,7 +58,7 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
 Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
-Plug 'j-hui/fidget.nvim'
+Plug 'j-hui/fidget.nvim', {'tag': 'legacy'}
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'TimUntersberger/neogit'
 Plug 'nvim-tree/nvim-web-devicons'
@@ -183,10 +183,7 @@ mason_lspconfig.setup_handlers({
 vim.opt.list = true
 vim.opt.listchars:append "space:⋅"
 vim.opt.listchars:append "eol:↴"
-require("indent_blankline").setup {
-    space_char_blankline = " ",
-}
-
+require("ibl").setup()
 local neogit = require("neogit")
 neogit.setup {}
 EOF
