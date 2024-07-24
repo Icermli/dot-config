@@ -13,6 +13,9 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'gruvbox-community/gruvbox'
 let g:airline#extensions#whitespace#max_lines = 20000
 let g:airline#extensions#tagbar#enabled = 0
+Plug 'bluz71/vim-nightfly-colors', { 'as': 'nightfly' }
+Plug 'luochen1990/rainbow'
+let g:rainbow_active = 1
 
 Plug 'editorconfig/editorconfig-vim'
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
@@ -35,6 +38,7 @@ let g:vim_markdown_folding_disabled = 1
 
 Plug 'mattn/emmet-vim'
 
+Plug 'ryanoasis/vim-devicons'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'majutsushi/tagbar'
 let g:tagbar_file_size_limit = 10000
@@ -46,15 +50,24 @@ Plug 'Raimondi/delimitMate'
 Plug 'sbdchd/neoformat'
 
 Plug 'mbbill/undotree'
-Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'shumphrey/fugitive-gitlab.vim'
 
 Plug 'neovim/nvim-lsp'
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'
+Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
+Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
+Plug 'j-hui/fidget.nvim', {'tag': 'legacy'}
+Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'TimUntersberger/neogit'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'folke/trouble.nvim'
 
-Plug 'nvim-lua/completion-nvim'
+Plug 'nvim-lua/plenary.nvim'
 
 Plug 'junegunn/fzf', { 'dir': '~/.local/share/fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -144,46 +157,43 @@ autocmd FileType apache setlocal commentstring=#\ %s
 
 let delimitMate_autoclose = 0
 
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-let g:UltiSnipsListSnippets="<c-u>"
-let g:UltiSnipsEditSplit="vertical"
-
 lua <<EOF
+require("mason").setup()
+local mason_lspconfig = require("mason-lspconfig")
 local lsp_config = require("lspconfig")
-local lsp_completion = require("completion")
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-local general_on_attach = function(client, bufnr)
-  if client.server_capabilities.completion then
-    lsp_completion.on_attach(client, bufnr)
-  end
-end
-
-lsp_config["pyright"].setup{
-  filetypes = {"python", "pyopencl"};
-  on_attach = general_on_attach;
+vim.g.coq_settings = {
+  auto_start = true,
+  keymap = {
+    recommended = true,
+    pre_select = true,
+    bigger_preview = '<c-l>',
+    manual_complete = '<c-q>',
+  },
 }
+local coq = require("coq")
 
-local servers = {"html", "cssls", "gopls", "tsserver", "ccls", "texlab"}
+require"fidget".setup{}
 
--- Setup other basic lsp servers
-for _, server in ipairs(servers) do
-  lsp_config[server].setup {
-    -- Add capabilities
-    capabilities = capabilities,
-    on_attach = general_on_attach,
-    flags = {
-        debounce_text_changes = 150,
-        }
-  }
-end
+mason_lspconfig.setup_handlers({
+    function (server_name) -- default handler
+        require("lspconfig")[server_name].setup({
+            coq.lsp_ensure_capabilities({ on_attach = general_on_attach, })
+        })
+    end,
+})
+
+vim.opt.list = true
+vim.opt.listchars:append "space:⋅"
+vim.opt.listchars:append "eol:↴"
+require("ibl").setup()
+local neogit = require("neogit")
+neogit.setup {}
 EOF
 
-nnoremap <silent> <leader>ld    <cmd>lua vim.lsp.buf.declaration()<CR>
+nnoremap <silent> <leader>lc    <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap <silent> <leader>li    <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> <leader>lc    <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> <leader>ld    <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> <c-]>         <cmd>lua vim.lsp.buf.definition()<CR>
 
 nnoremap <silent> <leader>lh    <cmd>lua vim.lsp.buf.hover()<CR>
@@ -194,17 +204,13 @@ nnoremap <silent> <leader>lF    <cmd>lua vim.lsp.buf.document_symbol()<CR>
 nnoremap <silent> <leader>lW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 
 nnoremap <silent> <leader>dh    <cmd>lua vim.diagnostic.open_float()<CR>
-nnoremap <silent> <leader>dD    <cmd>lua vim.diagnostic.set_loclist()<CR>
-nnoremap <silent> <leader>dk    <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-nnoremap <silent> <leader>dj    <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+nnoremap <silent> <leader>dD    <cmd>lua vim.diagnostic.setloclist()<CR>
+nnoremap <silent> <leader>dk    <cmd>lua vim.diagnostic.goto_prev()<CR>
+nnoremap <silent> <leader>dj    <cmd>lua vim.diagnostic.goto_next()<CR>
 
 set omnifunc=syntaxcomplete#Complete
 autocmd Filetype go setlocal omnifunc=v:lua.vim.lsp.omnifunc
 autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
-
-set completeopt=menuone,noinsert,noselect
-let g:completion_enable_snippet = 'UltiSnips'
-let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
 
 set shortmess+=c
 
@@ -212,17 +218,50 @@ lua <<EOF
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
     underline = false,
-    virtual_text = false,
+    virtual_text = true,
     signs = true,
     update_in_insert = false,
   }
 )
 EOF
 
-call sign_define("DiagnosticSignError", {"text" : "🔥", "texthl" : "DiagnosticSignError"})
-call sign_define("DiagnosticSignWarning", {"text" : "👻", "texthl" : "DiagnosticSignWarning"})
-call sign_define("DiagnosticSignInformation", {"text" : "👽", "texthl" : "DiagnosticSignInformation"})
-call sign_define("DiagnosticSignHint", {"text" : "🦄", "texthl" : "DiagnosticSignHint"})
+call sign_define("DiagnosticSignError", {"text" : "✘", "texthl" : "DiagnosticSignError"})
+call sign_define("DiagnosticSignWarn", {"text" : "▲", "texthl" : "DiagnosticSignWarning"})
+call sign_define("DiagnosticSignInfo", {"text" : "⚑", "texthl" : "DiagnosticSignInformation"})
+call sign_define("DiagnosticSignHint", {"text" : "»", "texthl" : "DiagnosticSignHint"})
+
+" call sign_define("DiagnosticSignError", {"text" : "", "texthl" : "DiagnosticSignError"})
+" call sign_define("DiagnosticSignWarn", {"text" : "", "texthl" : "DiagnosticSignWarning"})
+" call sign_define("DiagnosticSignInfo", {"text" : "", "texthl" : "DiagnosticSignInformation"})
+" call sign_define("DiagnosticSignHint", {"text" : "", "texthl" : "DiagnosticSignHint"})
+
+" call sign_define("DiagnosticSignError", {"text" : "🔥", "texthl" : "DiagnosticSignError"})
+" call sign_define("DiagnosticSignWarning", {"text" : "👻", "texthl" : "DiagnosticSignWarning"})
+" call sign_define("DiagnosticSignInformation", {"text" : "👽", "texthl" : "DiagnosticSignInformation"})
+" call sign_define("DiagnosticSignHint", {"text" : "🦄", "texthl" : "DiagnosticSignHint"})
+
+lua <<EOF
+require'nvim-web-devicons'.setup { 
+}
+require("trouble").setup {
+  signs = {
+    -- icons / text used for a diagnostic
+    Error = "✘",
+    Warn = "▲",
+    Hint = "⚑",
+    Info = "»",
+  },
+  use_diagnostic_signs = false -- enabling this will use the signs defined in your lsp client
+}
+EOF
+
+nnoremap <leader>xx <cmd>Trouble diagnostics toggle<cr>
+nnoremap <leader>xb <cmd>Trouble diagnostics toggle filter.buf=0<cr>
+nnoremap <leader>xs <cmd>Trouble symbols toggle focus=false<cr>
+nnoremap <leader>xd <cmd>Trouble lsp toggle focus=false win.position=right<cr>
+nnoremap <leader>xq <cmd>Trouble qflist toggle<cr>
+nnoremap <leader>xl <cmd>Trouble loclist toggle<cr>
+nnoremap gR <cmd>Trouble lsp toggle focus=false win.position=right<cr>
 
 " Emmet shortcuts
 let g:user_emmet_mode='n'  " only enable normal mode functions
@@ -325,7 +364,8 @@ set undodir=~/.cache/nvim/undodir/
 set undofile
 
 let g:airline_powerline_fonts = 1
-let g:airline_theme='gruvbox'
+" let g:airline_theme='gruvbox'
+let g:airline_theme='nightfly'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tmuxline#enabled = 1
 let g:airline#extensions#tmuxline#snapshot_file = "~/.tmux-statusline-colors.conf"
@@ -351,10 +391,16 @@ endif
 set termguicolors
 set background=dark
 
-let g:gruvbox_italic=1
-let g:gruvbox_contrast_light='medium'
-let g:gruvbox_contrast_dark='hard'
-colorscheme gruvbox
+" let g:gruvbox_italic=1
+" let g:gruvbox_contrast_light='medium'
+" let g:gruvbox_contrast_dark='hard'
+" colorscheme gruvbox
+let g:lightline = { 'colorscheme': 'nightfly' }
+let g:nightflyCursorColor = v:true
+let g:nightflyNormalFloat = v:true
+let g:nightflyUnderlineMatchParen = v:true
+let g:nightflyVirtualTextColor = v:true
+colorscheme nightfly
 
 autocmd BufNewFile,BufRead *.txx set filetype=cpp
 
@@ -387,9 +433,6 @@ let g:tmux_navigator_no_mappings = 1
 if (executable('pbcopy') || executable('xclip') || executable('xsel')) && has('clipboard')
   set clipboard^=unnamed,unnamedplus
 endif
-
-set runtimepath+=$HOME/.conforg/contrib/nvim-snips
-let g:UltiSnipsSnippetDirectories=[$HOME.'/.conforg/contrib/nvim-snips']
 
 if s:uname == "Darwin\n"
   let g:python_host_prog='/usr/local/bin/python2'

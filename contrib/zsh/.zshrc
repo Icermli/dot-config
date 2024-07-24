@@ -81,31 +81,39 @@ bindkey -e
 
 export GPG_TTY=$(tty)
 
-source  /etc/profile
+source /etc/profile
 
-[[ ! -f ~/.bash_profile ]] || source $HOME/.bash_profile
+if [[ -z $TMUX ]]; then
+    [[ ! -f ~/.bash_profile ]] || source $HOME/.bash_profile
+fi
 
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk.jdk/Contents/Home
+export HADOOP_HOME=/opt/homebrew/Cellar/hadoop/3.4.0
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_comp
 
 if [ -f $CONFORG_DIR/contrib/bash-insulter/src/bash.command-not-found ]; then
     source $CONFORG_DIR/contrib/bash-insulter/src/bash.command-not-found
 fi
 
-if [ -f $CONDA_DIR/etc/profile.d/conda.sh ]; then
+# if [ -f $CONDA_DIR/etc/profile.d/conda.sh ]; then
 # . $CONDA_DIR/etc/profile.d/conda.sh  # commented out by conda initialize
-fi
+# fi
 
 export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
-
 export JUPYTERLAB_DIR=$HOME/.local/share/jupyter/lab
+if [[ -z $TMUX ]]; then
+    export PATH=$PATH:$GOPATH/bin
 
-export PATH=$HOME/.local/bin:$PATH
-export PATH=$CLI_UTILS_DIR:$PATH
-export PATH=$SCRIPTS_DIR:$PATH
+    export PATH=$HOME/.local/bin:$PATH
+    export PATH=$CLI_UTILS_DIR:$PATH
+    export PATH=$SCRIPTS_DIR:$PATH
 
-export PATH=$HOME/.cargo/bin:$PATH 
-export PATH=$HOME/.radicle/bin:$PATH 
+    export PATH=$HOME/.cargo/bin:$PATH 
+    export PATH=$HOME/.radicle/bin:$PATH 
+fi
 
 export MANPAGER="sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu' \
     -c 'nnoremap i <nop>' \
@@ -252,9 +260,13 @@ zstyle ':completion:*' list-colors "${(@s.:.)}LS_COLORS"
 
 export GPG_TTY=$(tty)
 
-source /home/haohan/.local/share/fzf/shell/completion.zsh
+if [ -f /home/haohan/.local/share/fzf/shell/completion.zsh ]; then
+    source /home/haohan/.local/share/fzf/shell/completion.zsh
+fi
 
-source /home/haohan/.local/share/fzf/shell/key-bindings.zsh
+if [ -f /home/haohan/.local/share/fzf/shell/key-bindings.zsh ]; then
+    source /home/haohan/.local/share/fzf/shell/key-bindings.zsh
+fi
 
 for dump in $HOME/.zcompdump(N.mh+24); do
     # echo "Updating completion cache.."
@@ -268,8 +280,12 @@ if type "kitty" > /dev/null; then
     kitty + complete setup zsh | source /dev/stdin
 fi
 
-if [ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
-    source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+    source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+if [ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
+    source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
 
 if [ -f /usr/share/nvm/init-nvm.sh ]; then
@@ -283,6 +299,16 @@ fi
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+_fzf_comprun() {
+  local command=$1
+  shift
+
+  case "$command" in
+    cd)           fzf "$@" --preview 'tree -C {} | head -200' ;;
+    *)            fzf "$@" ;;
+  esac
+}
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
