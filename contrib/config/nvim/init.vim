@@ -14,6 +14,8 @@ Plug 'gruvbox-community/gruvbox'
 let g:airline#extensions#whitespace#max_lines = 20000
 let g:airline#extensions#tagbar#enabled = 0
 Plug 'bluz71/vim-nightfly-colors', { 'as': 'nightfly' }
+Plug 'luochen1990/rainbow'
+let g:rainbow_active = 1
 
 Plug 'editorconfig/editorconfig-vim'
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
