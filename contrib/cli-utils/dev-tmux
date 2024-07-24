@@ -5,13 +5,13 @@ session_name='dev'
 tmux new-session -d -s $session_name
 tmux rename-window 'cereal'
 tmux send-keys -t $session_name:'cereal'.0 "conda activate cereal" Enter "clear" Enter
-tmux split-window -v -p 35
+tmux split-window -v -l 35%
 tmux send-keys -t $session_name:'cereal'.1 "conda activate cereal" Enter "clear" Enter
 tmux split-window -h
 tmux send-keys -t $session_name:'cereal'.2 "conda activate cereal" Enter "clear" Enter
 tmux new-window -n 'lilac'
 tmux send-keys -t $session_name:'lilac'.0 "conda activate lilac" Enter "clear" Enter
-tmux split-window -v -p 35
+tmux split-window -v -l 35%
 tmux send-keys -t $session_name:'lilac'.1 "conda activate lilac" Enter "clear" Enter
 tmux new-window -n 'cv'
 tmux send-keys -t $session_name:'cv' "conda activate cv" Enter "clear" Enter

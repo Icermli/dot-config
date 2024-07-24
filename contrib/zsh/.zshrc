@@ -88,6 +88,11 @@ if [[ -z $TMUX ]]; then
 fi
 
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk.jdk/Contents/Home
+export HADOOP_HOME=/opt/homebrew/Cellar/hadoop/3.4.0
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_comp
 
 if [ -f $CONFORG_DIR/contrib/bash-insulter/src/bash.command-not-found ]; then
     source $CONFORG_DIR/contrib/bash-insulter/src/bash.command-not-found

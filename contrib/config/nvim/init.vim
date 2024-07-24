@@ -13,6 +13,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'gruvbox-community/gruvbox'
 let g:airline#extensions#whitespace#max_lines = 20000
 let g:airline#extensions#tagbar#enabled = 0
+Plug 'bluz71/vim-nightfly-colors', { 'as': 'nightfly' }
 
 Plug 'editorconfig/editorconfig-vim'
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
@@ -215,17 +216,22 @@ lua <<EOF
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
     underline = false,
-    virtual_text = false,
+    virtual_text = true,
     signs = true,
     update_in_insert = false,
   }
 )
 EOF
 
-call sign_define("DiagnosticSignError", {"text" : "", "texthl" : "DiagnosticSignError"})
-call sign_define("DiagnosticSignWarning", {"text" : "", "texthl" : "DiagnosticSignWarning"})
-call sign_define("DiagnosticSignInformation", {"text" : "", "texthl" : "DiagnosticSignInformation"})
-call sign_define("DiagnosticSignHint", {"text" : "", "texthl" : "DiagnosticSignHint"})
+call sign_define("DiagnosticSignError", {"text" : "✘", "texthl" : "DiagnosticSignError"})
+call sign_define("DiagnosticSignWarn", {"text" : "▲", "texthl" : "DiagnosticSignWarning"})
+call sign_define("DiagnosticSignInfo", {"text" : "⚑", "texthl" : "DiagnosticSignInformation"})
+call sign_define("DiagnosticSignHint", {"text" : "»", "texthl" : "DiagnosticSignHint"})
+
+" call sign_define("DiagnosticSignError", {"text" : "", "texthl" : "DiagnosticSignError"})
+" call sign_define("DiagnosticSignWarn", {"text" : "", "texthl" : "DiagnosticSignWarning"})
+" call sign_define("DiagnosticSignInfo", {"text" : "", "texthl" : "DiagnosticSignInformation"})
+" call sign_define("DiagnosticSignHint", {"text" : "", "texthl" : "DiagnosticSignHint"})
 
 " call sign_define("DiagnosticSignError", {"text" : "🔥", "texthl" : "DiagnosticSignError"})
 " call sign_define("DiagnosticSignWarning", {"text" : "👻", "texthl" : "DiagnosticSignWarning"})
@@ -238,21 +244,22 @@ require'nvim-web-devicons'.setup {
 require("trouble").setup {
   signs = {
     -- icons / text used for a diagnostic
-    error = "",
-    warning = "",
-    hint = "",
-    information = "",
+    Error = "✘",
+    Warn = "▲",
+    Hint = "⚑",
+    Info = "»",
   },
   use_diagnostic_signs = false -- enabling this will use the signs defined in your lsp client
 }
 EOF
 
-nnoremap <leader>xx <cmd>TroubleToggle<cr>
-nnoremap <leader>xw <cmd>TroubleToggle workspace_diagnostics<cr>
-nnoremap <leader>xd <cmd>TroubleToggle document_diagnostics<cr>
-nnoremap <leader>xq <cmd>TroubleToggle quickfix<cr>
-nnoremap <leader>xl <cmd>TroubleToggle loclist<cr>
-nnoremap gR <cmd>TroubleToggle lsp_references<cr>
+nnoremap <leader>xx <cmd>Trouble diagnostics toggle<cr>
+nnoremap <leader>xb <cmd>Trouble diagnostics toggle filter.buf=0<cr>
+nnoremap <leader>xs <cmd>Trouble symbols toggle focus=false<cr>
+nnoremap <leader>xd <cmd>Trouble lsp toggle focus=false win.position=right<cr>
+nnoremap <leader>xq <cmd>Trouble qflist toggle<cr>
+nnoremap <leader>xl <cmd>Trouble loclist toggle<cr>
+nnoremap gR <cmd>Trouble lsp toggle focus=false win.position=right<cr>
 
 " Emmet shortcuts
 let g:user_emmet_mode='n'  " only enable normal mode functions
@@ -355,7 +362,8 @@ set undodir=~/.cache/nvim/undodir/
 set undofile
 
 let g:airline_powerline_fonts = 1
-let g:airline_theme='gruvbox'
+" let g:airline_theme='gruvbox'
+let g:airline_theme='nightfly'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tmuxline#enabled = 1
 let g:airline#extensions#tmuxline#snapshot_file = "~/.tmux-statusline-colors.conf"
@@ -381,10 +389,16 @@ endif
 set termguicolors
 set background=dark
 
-let g:gruvbox_italic=1
-let g:gruvbox_contrast_light='medium'
-let g:gruvbox_contrast_dark='hard'
-colorscheme gruvbox
+" let g:gruvbox_italic=1
+" let g:gruvbox_contrast_light='medium'
+" let g:gruvbox_contrast_dark='hard'
+" colorscheme gruvbox
+let g:lightline = { 'colorscheme': 'nightfly' }
+let g:nightflyCursorColor = v:true
+let g:nightflyNormalFloat = v:true
+let g:nightflyUnderlineMatchParen = v:true
+let g:nightflyVirtualTextColor = v:true
+colorscheme nightfly
 
 autocmd BufNewFile,BufRead *.txx set filetype=cpp
 
