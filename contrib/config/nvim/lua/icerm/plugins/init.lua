@@ -1,8 +1,79 @@
 return {
-    "nvim-lua/plenary.nvim", -- lua functions that many plugins use
-    "christoomey/vim-tmux-navigator", -- tmux & split window navigation
-    { "bluz71/vim-nightfly-colors", name = "nightfly", lazy = false, priority = 1000 },
-    { 'ms-jpq/coq_nvim', branch = 'coq' },
-    { 'ms-jpq/coq.artifacts', branch = 'artifacts' },
-    { 'ms-jpq/coq.thirdparty', branch = '3p' },
+    { 'nvim-lua/plenary.nvim' }, -- lua functions that many plugins use
+    { 'christoomey/vim-tmux-navigator' }, -- tmux & split window navigation
+
+    -- colorscheme
+    { 
+        'bluz71/vim-nightfly-colors',
+        name = 'nightfly',
+        lazy = false,
+        priority = 1000,
+        config = function()
+            vim.cmd([[colorscheme tokyonight]])
+        end,
+    },
+
+    { 'HiPhish/rainbow-delimiters.nvim' }, -- parentheses guides
+
+    -- status line
+    { 
+        'nvim-lualine/lualine.nvim',
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
+        config = function() require('lualine').setup() end,
+
+    },
+    -- fzf
+    { 'junegunn/fzf', dir = '~/.local/share/fzf', build = './install --all' },
+    { 'ibhagwan/fzf-lua' },
+
+    -- surround
+    -- e.g. cs"' das(
+    {
+        "kylechui/nvim-surround",
+        event = { "BufReadPre", "BufNewFile" },
+        version = "*", -- Use for stability; omit to use `main` branch for the latest features
+        config = true,
+    },
+
+    -- comment
+    -- e.g. gcc gbc, and in visual mode: gb gc
+    {
+        'numToStr/Comment.nvim',
+        config = function() require('Comment').setup() end,
+    },
+
+    { 'NeogitOrg/neogit', dependencies = 'nvim-lua/plenary.nvim' }, -- git
+
+    -- syntax for languages not supported by treesitter
+    { 'david-a-wheeler/vim-metamath' },
+    { 'czheo/mojo.vim' },
+    { 'sheerun/vim-polyglot' },
+    { 'nathangrigg/vim-beancount' },
+    { 'hjson/vim-hjson' },
+
+    -- treesitter
+    {
+        'nvim-treesitter/nvim-treesitter',
+        build = function()
+            local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+            ts_update()
+        end,
+    },
+    { 'nvim-treesitter/nvim-treesitter-context' }
+
+    -- linters
+    { 
+        'j-hui/fidget.nvim',
+        config = function() require('fidget').setup() end,
+    },
+    { 'mfussenegger/nvim-lint' },
+
+    -- snippets
+    {
+        "L3MON4D3/LuaSnip",
+        -- follow latest release.
+        version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+        -- install jsregexp (optional!:).
+        build = "make install_jsregexp"
+    },
 }

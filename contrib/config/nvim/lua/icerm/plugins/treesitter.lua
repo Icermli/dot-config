@@ -1,12 +1,14 @@
 return {
-    "nvim-treesitter/nvim-treesitter",
-    "nvim-treesitter/nvim-treesitter-context",
-    init = function()
-        local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
-        ts_update()
-    end,
+    'nvim-treesitter/nvim-treesitter',
+    dependencies = {
+        'nvim-treesitter/nvim-treesitter-context'
+    },
+    build = ":TSUpdate",
     config = function()
-        require'nvim-treesitter.configs'.setup {
+        local configs = require('nvim-treesitter.configs')
+        local context = require('treesitter-context')
+
+        configs.setup {
             ensure_installed = "all",
             sync_install = false,
             auto_install = true,
@@ -30,7 +32,7 @@ return {
             },
         }
         
-        require'treesitter-context'.setup{
+        context.setup{
             min_window_height = 20,
             separator = '✡'
         }
