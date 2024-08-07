@@ -86,11 +86,11 @@ function toggle_lsp()
 end
 vim.api.nvim_set_keymap('n', '<leader>L', '<cmd>lua toggle_lsp()<CR>', {noremap = true, silent = true})
 
--- --
--- -- AI
--- --
--- local ai = require('ai')
--- vim.keymap.set('n', '<leader>ag', function() ai.FillHoles('gpt-4-0125-preview') end, {silent = true})
--- vim.keymap.set('n', '<leader>aG', function() ai.FillHoles('gpt-4-32k-0314') end, {silent = true})
--- vim.keymap.set('n', '<leader>ac', function() ai.FillHoles('claude-3-haiku-20240307') end, {silent = true})
--- vim.keymap.set('n', '<leader>aC', function() ai.FillHoles('claude-3-opus-20240229') end, {silent = true})
+--
+-- AI
+--
+local ai = require('ai')
+vim.keymap.set('n', '<leader>ag', function() ai.FillHoles('gpt-4-0125-preview') end, {silent = true})
+vim.keymap.set('n', '<leader>aG', function() ai.FillHoles('gpt-4-32k-0314') end, {silent = true})
+vim.keymap.set('n', '<leader>ac', function() ai.FillHoles('claude-3-haiku-20240307') end, {silent = true})
+vim.keymap.set('n', '<leader>aC', function() ai.FillHoles('claude-3-opus-20240229') end, {silent = true})
