@@ -62,7 +62,16 @@ return {
         config = function() require('Comment').setup() end,
     },
 
-    { 'NeogitOrg/neogit', dependencies = 'nvim-lua/plenary.nvim' }, -- git
+    -- git
+    { 
+        'NeogitOrg/neogit',
+        dependencies = {
+            "nvim-lua/plenary.nvim",         -- required
+            "sindrets/diffview.nvim",        -- optional - Diff integration
+            "ibhagwan/fzf-lua",              -- optional
+          },
+          config = true
+    },
 
     -- syntax for languages not supported by treesitter
     { 'david-a-wheeler/vim-metamath' },
