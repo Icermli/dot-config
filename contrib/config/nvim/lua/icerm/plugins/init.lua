@@ -9,7 +9,12 @@ return {
         lazy = false,
         priority = 1000,
         config = function()
-            vim.cmd([[colorscheme tokyonight]])
+            vim.cmd([[colorscheme nightfly]])
+
+            vim.g.nightflyCursorColor          = true
+            vim.g.nightflyNormalFloat          = true
+            vim.g.nightflyUnderlineMatchParen  = true
+            vim.g.nightflyVirtualTextColor     = true
         end,
     },
 
@@ -19,7 +24,11 @@ return {
     { 
         'nvim-lualine/lualine.nvim',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
-        config = function() require('lualine').setup() end,
+        config = function() require('lualine').setup({
+            sections = {
+                lualine_x = { "encoding", { "fileformat", symbols = { unix = "" } }, "filetype" },
+            },
+        }) end,
 
     },
     -- fzf
@@ -59,7 +68,7 @@ return {
             ts_update()
         end,
     },
-    { 'nvim-treesitter/nvim-treesitter-context' }
+    { 'nvim-treesitter/nvim-treesitter-context' },
 
     -- linters
     { 
