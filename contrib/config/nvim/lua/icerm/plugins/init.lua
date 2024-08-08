@@ -59,7 +59,7 @@ return {
     -- e.g. gcc gbc, and in visual mode: gb gc
     {
         'numToStr/Comment.nvim',
-        config = function() require('Comment').setup() end,
+        event = { "BufReadPre", "BufNewFile" },
     },
 
     -- git

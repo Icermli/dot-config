@@ -4,6 +4,7 @@ return {
     dependencies = {
         { 'williamboman/mason.nvim' },
         { 'williamboman/mason-lspconfig.nvim' },
+        { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
         { 'ms-jpq/coq_nvim', branch = 'coq' }, 
         { 'ms-jpq/coq.artifacts', branch = 'artifacts' },
         { 'ms-jpq/coq.thirdparty', branch = '3p' },
@@ -62,6 +63,15 @@ return {
                 };
             end,
         }
+
+        require("mason-tool-installer").setup({
+            ensure_installed = {
+                "prettier", -- prettier formatter
+                "stylua", -- lua formatter
+                "isort", -- python formatter
+                "black", -- python formatter
+            },
+        })
 
         -- Add python filetype to pyopencl for proper lsp mapping to happend
         vim.api.nvim_create_autocmd('FileType', { pattern = 'pyopencl', command = ':set filetype=pyopencl.python' })
