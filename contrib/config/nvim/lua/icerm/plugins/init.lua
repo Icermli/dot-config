@@ -95,7 +95,6 @@ return {
         'j-hui/fidget.nvim',
         config = function() require('fidget').setup() end,
     },
-    { 'mfussenegger/nvim-lint' },
 
     -- snippets
     {

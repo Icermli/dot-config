@@ -16,7 +16,20 @@ return {
     end,
     config = function()
         require('mason').setup()
-        require('mason-lspconfig').setup()
+        require('mason-lspconfig').setup({
+            ensure_installed = {
+                "tsserver",
+                "html",
+                "cssls",
+                "tailwindcss",
+                "svelte",
+                "lua_ls",
+                "graphql",
+                "emmet_ls",
+                "prismals",
+                "pyright",
+            },
+        })
 
         local coq = require('coq')
 
@@ -70,6 +83,7 @@ return {
                 "stylua", -- lua formatter
                 "isort", -- python formatter
                 "black", -- python formatter
+                "eslint_d",
             },
         })
 
