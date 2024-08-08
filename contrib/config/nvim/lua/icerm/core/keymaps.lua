@@ -67,7 +67,7 @@ vim.keymap.set("n", "<leader>i", "<cmd>lua vim.lsp.buf.implementation()<cr>", { 
 vim.keymap.set("n", "<leader>c", "<cmd>lua vim.lsp.buf.definition()<cr>", { silent = true })
 vim.keymap.set("n", "<leader>v", "<cmd>lua vim.lsp.buf.hover()<cr>", { silent = true })
 vim.keymap.set("n", "<leader>s", "<cmd>lua vim.lsp.buf.signature_help()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>t", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>e", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { silent = true })
 vim.keymap.set("n", "<leader>r", "<cmd>lua vim.lsp.buf.references()<cr>", { silent = true })
 vim.keymap.set("n", "<leader>w", "<cmd>lua vim.lsp.buf.workspace_symbol()<cr>", { silent = true })
 vim.keymap.set("n", "<leader>b", "<cmd>lua vim.diagnostic.open_float()<cr>", { silent = true })
@@ -85,6 +85,12 @@ function toggle_lsp()
     })
 end
 vim.api.nvim_set_keymap('n', '<leader>L', '<cmd>lua toggle_lsp()<CR>', {noremap = true, silent = true})
+
+vim.keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" }) -- open new tab
+vim.keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" }) -- close current tab
+vim.keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
+vim.keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
+vim.keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
 
 -- --
 -- -- AI
