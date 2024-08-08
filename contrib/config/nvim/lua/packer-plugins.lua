@@ -3,7 +3,7 @@ return require('packer').startup(function()
     use 'wbthomason/packer.nvim'
 
     -- colorscheme
-    use 'gruvbox-community/gruvbox'
+    use 'bluz71/vim-nightfly-colors'
 
     -- indentation guides
     use 'lukas-reineke/indent-blankline.nvim'
@@ -16,7 +16,12 @@ return require('packer').startup(function()
     -- status line
     use {
         'nvim-lualine/lualine.nvim',
-        config = function() require('lualine').setup() end }
+        config = function() require('lualine').setup({
+            sections = {
+                lualine_x = { "encoding", { "fileformat", symbols = { unix = "" } }, "filetype" },
+            },
+        }) end }
+    use { 'nvim-tree/nvim-web-devicons' }
 
     -- fzf
     use { 'junegunn/fzf', dir = '~/.local/share/fzf', run = ':call "./install --all"' }
@@ -69,6 +74,10 @@ return require('packer').startup(function()
         'j-hui/fidget.nvim', tag = 'v1.2.0',
         config = function() require('fidget').setup() end }
     use 'mfussenegger/nvim-lint'
+    use {
+        "folke/trouble.nvim",
+        "folke/todo-comments.nvim",
+    }
 
     -- completion
     use { 'ms-jpq/coq_nvim', branch = 'coq' }

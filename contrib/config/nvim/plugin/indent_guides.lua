@@ -28,6 +28,7 @@ end)
 -- rainbow-delimiters.nvim integration
 vim.g.rainbow_delimiters = { highlight = highlight }
 require("ibl").setup {
+    indent = { highlight = highlight },
     scope = { highlight = highlight }
 }
 
