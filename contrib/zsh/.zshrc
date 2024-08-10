@@ -17,9 +17,16 @@ if [[ "$PROFILE_STARTUP" == true ]]; then
 fi
 
 export CONFORG_DIR=$HOME/.dot-config
-export CONDA_DIR=$HOME/opt/miniconda3
 export CLI_UTILS_DIR=$HOME/cli-utils
 export SCRIPTS_DIR=$HOME/.scripts
+if [[ $(uname) == "Darwin" ]]; then
+    export CONDA_DIR=/opt/miniconda3
+    export BREW_DIR=/opt/homebrew
+elif [[ $(uname) == "Linux" ]]; then
+    export CONDA_DIR=$HOME/miniconda3
+    export BREW_DIR=/home/linuxbrew/.linuxbrew
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
@@ -89,10 +96,10 @@ fi
 
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk.jdk/Contents/Home
-export HADOOP_HOME=/opt/homebrew/Cellar/hadoop/3.4.0
+export HADOOP_HOME=$BREW_DIR/Cellar/hadoop/3.4.0
 export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_comp
+[ -s "$BREW_DIR/opt/nvm/nvm.sh" ] && \. "$BREW_DIR/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "$BREW_DIR/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$BREW_DIR/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_comp
 
 if [ -f $CONFORG_DIR/contrib/bash-insulter/src/bash.command-not-found ]; then
     source $CONFORG_DIR/contrib/bash-insulter/src/bash.command-not-found
@@ -260,12 +267,12 @@ zstyle ':completion:*' list-colors "${(@s.:.)}LS_COLORS"
 
 export GPG_TTY=$(tty)
 
-if [ -f /opt/homebrew/opt/fzf/shell/completion.zsh ]; then
-    source /opt/homebrew/opt/fzf/shell/completion.zsh
+if [ -f $BREW_DIR/opt/fzf/shell/completion.zsh ]; then
+    source $BREW_DIR/opt/fzf/shell/completion.zsh
 fi
 
-if [ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]; then
-    source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+if [ -f $BREW_DIR/opt/fzf/shell/key-bindings.zsh ]; then
+    source $BREW_DIR/opt/fzf/shell/key-bindings.zsh
 fi
 
 for dump in $HOME/.zcompdump(N.mh+24); do
@@ -280,12 +287,12 @@ if type "kitty" > /dev/null; then
     kitty + complete setup zsh | source /dev/stdin
 fi
 
-if [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
-    source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [ -f $BREW_DIR/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+    source $BREW_DIR/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
-if [ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
-    source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+if [ -f $BREW_DIR/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
+    source $BREW_DIR/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
 
 if [ -f /usr/share/nvm/init-nvm.sh ]; then
@@ -312,14 +319,20 @@ _fzf_comprun() {
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [[ $(uname) == "Darwin" ]]; then
+    __conda_setup="$('/opt/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+elif [[ $(uname) == "Linux" ]]; then
+    __conda_setup="$('/home/haohan/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+fi
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/opt/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/opt/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "$CONDA_DIR/etc/profile.d/conda.sh" ]; then
+        . "$CONDA_DIR/etc/profile.d/conda.sh"
     elif [[ -z $TMUX ]]; then
-        export PATH="/opt/miniconda3/bin:$PATH"
+        export PATH="$CONDA_DIR/bin:$PATH"
+    else
+        export PATH="$CONDA_DIR/bin:$PATH"
     fi
 fi
 unset __conda_setup
