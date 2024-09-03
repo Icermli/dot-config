@@ -15,6 +15,6 @@ tmux split-window -v -l 35%
 tmux send-keys -t $session_name:'lilac'.1 "conda activate lilac" Enter "clear" Enter
 tmux new-window -n 'cv'
 tmux send-keys -t $session_name:'cv' "conda activate cv" Enter "clear" Enter
-tmux new-window -n 'tensorflow'
-tmux send-keys -t $session_name:'tensorflow' "conda activate tensorflow" Enter "clear" Enter
+tmux new-window -n 'mm'
+tmux send-keys -t $session_name:'mm' "conda activate mm" Enter "clear" Enter
 tmux -2 attach-session -d
