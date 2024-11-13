@@ -310,6 +310,8 @@ _fzf_comprun() {
   esac
 }
 
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/opt/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
