@@ -32,8 +32,8 @@ vim.api.nvim_set_keymap('n', '<leader>V',
 -- * fzf for fuzzy search
 vim.keymap.set("n", "<C-P>", "<cmd>lua require('fzf-lua').files()<CR>", { silent = true })
 vim.keymap.set("n", "<C-F>", "<cmd>lua require('fzf-lua').blines()<CR>", { silent = true })
-vim.keymap.set("n", "<C-K>", "<cmd>lua require('fzf-lua').live_grep_glob()<CR>", { silent = true })
-vim.keymap.set("v", "<C-K>", "<cmd>lua require('fzf-lua').grep_visual()<CR>", { silent = true })
+vim.keymap.set("n", "<C-G>", "<cmd>lua require('fzf-lua').live_grep_glob()<CR>", { silent = true })
+vim.keymap.set("v", "<C-G>", "<cmd>lua require('fzf-lua').grep_visual()<CR>", { silent = true })
 -- * netrw for file explorer
 vim.keymap.set({ "n", "v", "i" }, "<C-B>", "<esc><cmd>Lex<cr>:vertical resize 30<cr>")
 -- * move between windows
