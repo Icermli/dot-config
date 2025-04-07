@@ -43,7 +43,7 @@ return {
 
     },
     -- fzf
-    { 'junegunn/fzf', dir = '~/.local/share/fzf', build = './install --all' },
+    { 'junegunn/fzf', dir = '/opt/homebrew/Cellar/fzf', build = './install --all' },
     { 'ibhagwan/fzf-lua' },
 
     -- surround
