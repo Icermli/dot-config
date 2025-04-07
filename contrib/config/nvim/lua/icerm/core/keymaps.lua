@@ -11,7 +11,7 @@ for _, mode in ipairs(modes) do
 end
 
 -- call current line as a terminal command, paste below
-vim.api.nvim_set_keymap('n', '<leader>,', '0y$:r!<C-r>"<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<leader>,', '0y$:r!<C-r>"<CR>', {noremap = true, silent = true, desc = "Run current line as shell command and paste output below" })
 
 -- Toggle virtualedit
 local function toggleVirtualedit()
@@ -26,7 +26,13 @@ end
 vim.api.nvim_set_keymap('n', '<leader>V', 
   "<cmd>lua if vim.o.virtualedit == '' then vim.o.virtualedit = 'all' " ..
   "else vim.o.virtualedit = '' end<CR>", 
-  {noremap = true, silent = true})
+  {noremap = true, silent = true, desc = "Toggle virtualedit"})
+
+-- use jk to exit insert mode
+vim.keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
+
+-- clear search highlights
+vim.keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
 -- Navigation and Searching: Ctrl + p/f/k/b
 -- * fzf for fuzzy search
@@ -37,14 +43,14 @@ vim.keymap.set("v", "<C-G>", "<cmd>lua require('fzf-lua').grep_visual()<CR>", { 
 -- * netrw for file explorer
 vim.keymap.set({ "n", "v", "i" }, "<C-B>", "<esc><cmd>Lex<cr>:vertical resize 30<cr>")
 -- * move between windows
-vim.keymap.set("n", "<Leader>h", "<cmd>wincmd h<cr>")
-vim.keymap.set("n", "<Leader>j", "<cmd>wincmd j<cr>")
-vim.keymap.set("n", "<Leader>k", "<cmd>wincmd k<cr>")
-vim.keymap.set("n", "<Leader>l", "<cmd>wincmd l<cr>")
+vim.keymap.set("n", "<Leader>wh", "<cmd>wincmd h<cr>")
+vim.keymap.set("n", "<Leader>wj", "<cmd>wincmd j<cr>")
+vim.keymap.set("n", "<Leader>wk", "<cmd>wincmd k<cr>")
+vim.keymap.set("n", "<Leader>wl", "<cmd>wincmd l<cr>")
 -- * move through quickfix
-vim.keymap.set("n", "<Leader>n", "<cmd>cnext<cr>", { silent = true })
-vim.keymap.set("n", "<Leader>p", "<cmd>cprevious<cr>", { silent = true })
-vim.keymap.set("n", "<Leader>q", "<cmd>cclose<cr>", { silent = true })
+vim.keymap.set("n", "<Leader>cn", "<cmd>cnext<cr>", { silent = true })
+vim.keymap.set("n", "<Leader>cp", "<cmd>cprevious<cr>", { silent = true })
+vim.keymap.set("n", "<Leader>cq", "<cmd>cclose<cr>", { silent = true })
 
 -- Fold/unfold
 -- Increase/decrease fold level and display current fold level
@@ -62,17 +68,17 @@ vim.keymap.set("n", "<Leader>gc", "<cmd>Neogit commit cwd=%:p:h<CR>")
 --
 -- LSP
 --
-vim.keymap.set("n", "<leader>d", "<cmd>lua vim.lsp.buf.declaration()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>i", "<cmd>lua vim.lsp.buf.implementation()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>c", "<cmd>lua vim.lsp.buf.definition()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>v", "<cmd>lua vim.lsp.buf.hover()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>s", "<cmd>lua vim.lsp.buf.signature_help()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>e", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>r", "<cmd>lua vim.lsp.buf.references()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>w", "<cmd>lua vim.lsp.buf.workspace_symbol()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>b", "<cmd>lua vim.diagnostic.open_float()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>[", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>]", "<cmd>lua vim.diagnostic.goto_next()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>ld", "<cmd>lua vim.lsp.buf.declaration()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>lc", "<cmd>lua vim.lsp.buf.definition()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>lv", "<cmd>lua vim.lsp.buf.hover()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>ls", "<cmd>lua vim.lsp.buf.signature_help()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>le", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>lr", "<cmd>lua vim.lsp.buf.references()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>lw", "<cmd>lua vim.lsp.buf.workspace_symbol()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>lb", "<cmd>lua vim.diagnostic.open_float()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>l[", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>l]", "<cmd>lua vim.diagnostic.goto_next()<cr>", { silent = true })
 
 -- toggle LSP diagnostics on and off
 function toggle_lsp()
@@ -85,6 +91,12 @@ function toggle_lsp()
     })
 end
 vim.api.nvim_set_keymap('n', '<leader>L', '<cmd>lua toggle_lsp()<CR>', {noremap = true, silent = true})
+
+-- window management
+vim.keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" }) -- split window vertically
+vim.keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" }) -- split window horizontally
+vim.keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" }) -- make split windows equal width & height
+vim.keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
 
 vim.keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" }) -- open new tab
 vim.keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" }) -- close current tab
