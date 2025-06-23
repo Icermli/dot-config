@@ -38,7 +38,7 @@ return {
         --
         -- Automatically set up LSP servers installed via mason.nvim
         --
-        require('mason-lspconfig').setup_handlers {
+        require('mason-lspconfig').setup({handlers = {
             -- The first entry (without a key) will be the default handler
             -- and will be called for each installed server that doesn't have
             -- a dedicated handler.
@@ -74,7 +74,7 @@ return {
                     };
                 };
             end,
-        }
+        }})
 
         require("mason-tool-installer").setup({
             ensure_installed = {
