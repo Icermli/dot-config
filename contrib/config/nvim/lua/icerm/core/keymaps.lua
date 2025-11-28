@@ -38,15 +38,15 @@ vim.keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights
 -- * fzf for fuzzy search
 vim.keymap.set("n", "<C-P>", "<cmd>lua require('fzf-lua').files()<CR>", { silent = true })
 vim.keymap.set("n", "<C-F>", "<cmd>lua require('fzf-lua').blines()<CR>", { silent = true })
-vim.keymap.set("n", "<C-G>", "<cmd>lua require('fzf-lua').live_grep_glob()<CR>", { silent = true })
+vim.keymap.set("n", "<C-G>", "<cmd>FzfLua live_grep<CR>", { silent = true })
 vim.keymap.set("v", "<C-G>", "<cmd>lua require('fzf-lua').grep_visual()<CR>", { silent = true })
 -- * netrw for file explorer
 vim.keymap.set({ "n", "v", "i" }, "<C-B>", "<esc><cmd>Lex<cr>:vertical resize 30<cr>")
 -- * move between windows
-vim.keymap.set("n", "<Leader>wh", "<cmd>wincmd h<cr>")
-vim.keymap.set("n", "<Leader>wj", "<cmd>wincmd j<cr>")
-vim.keymap.set("n", "<Leader>wk", "<cmd>wincmd k<cr>")
-vim.keymap.set("n", "<Leader>wl", "<cmd>wincmd l<cr>")
+vim.keymap.set("n", "<Leader>wh", "<cmd>wincmd h<cr>", { silent = true, desc = "Window left" })
+vim.keymap.set("n", "<Leader>wj", "<cmd>wincmd j<cr>", { silent = true, desc = "Window down" })
+vim.keymap.set("n", "<Leader>wk", "<cmd>wincmd k<cr>", { silent = true, desc = "Window up" })
+vim.keymap.set("n", "<Leader>wl", "<cmd>wincmd l<cr>", { silent = true, desc = "Window right" })
 -- * move through quickfix
 vim.keymap.set("n", "<Leader>cn", "<cmd>cnext<cr>", { silent = true })
 vim.keymap.set("n", "<Leader>cp", "<cmd>cprevious<cr>", { silent = true })
@@ -68,17 +68,17 @@ vim.keymap.set("n", "<Leader>gc", "<cmd>Neogit commit cwd=%:p:h<CR>")
 --
 -- LSP
 --
-vim.keymap.set("n", "<leader>ld", "<cmd>lua vim.lsp.buf.declaration()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>lc", "<cmd>lua vim.lsp.buf.definition()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>lv", "<cmd>lua vim.lsp.buf.hover()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>ls", "<cmd>lua vim.lsp.buf.signature_help()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>le", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>lr", "<cmd>lua vim.lsp.buf.references()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>lw", "<cmd>lua vim.lsp.buf.workspace_symbol()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>lb", "<cmd>lua vim.diagnostic.open_float()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>l[", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { silent = true })
-vim.keymap.set("n", "<leader>l]", "<cmd>lua vim.diagnostic.goto_next()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>dd", "<cmd>lua vim.lsp.buf.declaration()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>di", "<cmd>lua vim.lsp.buf.implementation()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>dc", "<cmd>lua vim.lsp.buf.definition()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>dv", "<cmd>lua vim.lsp.buf.hover()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>ds", "<cmd>lua vim.lsp.buf.signature_help()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>de", "<cmd>lua vim.lsp.buf.type_definition()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>dr", "<cmd>lua vim.lsp.buf.references()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>dw", "<cmd>lua vim.lsp.buf.workspace_symbol()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>db", "<cmd>lua vim.diagnostic.open_float()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>d[", "<cmd>lua vim.diagnostic.goto_prev()<cr>", { silent = true })
+vim.keymap.set("n", "<leader>d]", "<cmd>lua vim.diagnostic.goto_next()<cr>", { silent = true })
 
 -- toggle LSP diagnostics on and off
 function toggle_lsp()
