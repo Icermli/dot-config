@@ -56,59 +56,49 @@ return {
                 "emmet_ls",
                 "prismals",
             },
-            automatic_installation = true,
-            
-            handlers = {
-                ------------------------------------------------------------------
-                -- Default handler
-                ------------------------------------------------------------------
-                function (server_name) -- default handler (optional)
-                    require('lspconfig')[server_name].setup {
-                        coq.lsp_ensure_capabilities{
-                            on_attach = on_attach,
-                            single_file_support = false
-                        }
-                    }
-                end,
-            
-                ["pyright"] = function()
-                    require("lspconfig").pyright.setup(
-                        coq.lsp_ensure_capabilities({
-                            on_attach = on_attach,
-                            settings = {
-                                python = {
-                                    analysis = {
-                                        autoSearchPaths = true,
-                                        useLibraryCodeForTypes = true,
-                                        diagnosticMode = "workspace",   -- or "openFilesOnly"
-                                        typeCheckingMode = "standard", -- or "strict"
-                                    },
-                                },
-                            },
-                        })
-                    )
-                end,
-                ['ruff_lsp'] = function()
-                    require('lspconfig')['ruff_lsp'].setup {
-                        on_attach = function(client, bufnr)
-                            client.server_capabilities.hoverProvider = false
-                        end,
-                    }
-                end,
-                ['beancount'] = function()
-                    require('lspconfig')['beancount'].setup {
-                        init_options = {
-                            journal_file = '~/Personal/accounting/main.beancount',
-                        };
-                        coq.lsp_ensure_capabilities{
-                            on_attach = on_attach,
-                            single_file_support = false
-                        };
-                    };
-                end,
-            }})
+            -- automatic_installation = true,    
+        })
 
-        
+        -- Default / fallback for auto-installed servers
+        vim.lsp.config('*', {
+            on_attach = on_attach,
+            capabilities = coq.lsp_ensure_capabilities({}).capabilities,
+            single_file_support = false,
+        })
+
+        -- pyright example
+        vim.lsp.config('pyright', {
+            on_attach = on_attach,
+            capabilities = coq.lsp_ensure_capabilities({}).capabilities,
+            settings = {
+                python = {
+                    analysis = {
+                        autoSearchPaths = true,
+                        useLibraryCodeForTypes = true,
+                        diagnosticMode = 'workspace',
+                        typeCheckingMode = 'standard',  -- or 'strict'
+                    },
+                },
+            },
+        })
+
+        -- ruff (modern name; disable hover if you prefer another source)
+        vim.lsp.config('ruff', {
+            on_attach = function(client, bufnr)
+                on_attach(client, bufnr)
+                client.server_capabilities.hoverProvider = false
+            end,
+            capabilities = coq.lsp_ensure_capabilities({}).capabilities,
+        })
+
+        -- beancount
+        vim.lsp.config('beancount', {
+            on_attach = on_attach,
+            capabilities = coq.lsp_ensure_capabilities({}).capabilities,
+            init_options = {
+                journal_file = '~/Personal/accounting/main.beancount',
+            },
+        })
 
         -- Add python filetype to pyopencl for proper lsp mapping to happend
         vim.api.nvim_create_autocmd('FileType', { 
