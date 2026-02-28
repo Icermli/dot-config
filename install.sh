@@ -235,6 +235,7 @@ setup_entry .bashrc $DEFAULT_CONFORG_DIR/contrib/bash $HOME
 setup_entry powerlevel9k $DEFAULT_CONFORG_DIR/contrib $HOME/.oh-my-zsh/custom/themes
 setup_entry powerlevel10k $DEFAULT_CONFORG_DIR/contrib $HOME/.oh-my-zsh/custom/themes
 setup_entry .zshrc $DEFAULT_CONFORG_DIR/contrib/zsh $HOME
+setup_entry .zprofile $DEFAULT_CONFORG_DIR/contrib/zsh $HOME
 setup_entry tmuxline $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 setup_entry tmuxline_light $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 setup_entry tmuxline_dark $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
