@@ -81,7 +81,7 @@ bindkey -e
 
 export GPG_TTY=$(tty)
 
-source /etc/profile
+# source /etc/profile
 
 if [[ -z $TMUX ]]; then
     [[ ! -f ~/.bash_profile ]] || source $HOME/.bash_profile
@@ -310,7 +310,7 @@ _fzf_comprun() {
   esac
 }
 
-# eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
