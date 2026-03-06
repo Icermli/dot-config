@@ -258,8 +258,6 @@ zstyle ':completion:*' list-colors "${(@s.:.)}LS_COLORS"
 
 # export LSCOLORS="Gxfxcxdxbxegedabagacad"
 
-export GPG_TTY=$(tty)
-
 if [ -f /opt/homebrew/opt/fzf/shell/completion.zsh ]; then
     source /opt/homebrew/opt/fzf/shell/completion.zsh
 fi
