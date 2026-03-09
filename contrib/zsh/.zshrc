@@ -308,7 +308,9 @@ _fzf_comprun() {
   esac
 }
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
+if [[ -z $TMUX ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
