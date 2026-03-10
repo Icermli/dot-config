@@ -2,7 +2,7 @@
 
 # dot-config
 
-Several config files for bash, neovim and others. Inspaired by [https://github.com/xywei/dot-files](https://github.com/xywei/dot-files).
+Several config files for bash, zsh, neovim and others. Inspaired by [https://github.com/xywei/dot-files](https://github.com/xywei/dot-files).
 
 # download
 
@@ -15,6 +15,54 @@ $ git submodule update --init --recursive
 
 # dot-files
 A bunch of dot files that work accross different platforms.
+
+# install
+## Install Homebrew
+Run the following command:
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+## Install iTerm2 If Necessary
+If you don’t have a true color terminal, install iTerm2 with homebrew:
+```
+brew install --cask iterm2
+```
+
+## Install A Nerd Font
+I use Cascadia Code NF. To install it do:
+```
+brew tap homebrew/cask-fonts
+```
+And then do:
+```
+brew install --cask font-cascadia-code-nf
+```
+Then open iTerm2 settings with **CMD+**, and under **Profiles > Text** change the font to Cascadia Code NF
+
+## Install Neovim
+Run:
+```
+brew install neovim
+```
+
+## Install Ripgrep
+Run:
+```
+brew install ripgrep
+```
+
+## Install Node
+Run:
+```
+brew install node
+```
+
+## Then install all the dots
+Run:
+```
+./install.sh
+```
 
 ## tmux
 The .tmux.conf is a configuration file for tmux. To use, make a symlink of this file under $HOME.
