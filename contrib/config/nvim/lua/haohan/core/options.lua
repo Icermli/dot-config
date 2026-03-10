@@ -31,7 +31,7 @@ vim.g.markdown_fenced_languages = {'python', 'javascript', 'html', 'css'}
 
 -- avoid folds messing up syntax highlighting
 vim.o.foldmethod     = 'marker'
-vim.opt.foldlevel = 3
+vim.opt.foldlevel    = 3
 vim.api.nvim_create_autocmd("Syntax", {
     pattern = "*",
     callback = function()
