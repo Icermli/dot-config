@@ -44,7 +44,16 @@ return {
     },
     -- fzf
     { 'junegunn/fzf', dir = '/opt/homebrew/Cellar/fzf', build = './install --all' },
-    { 'ibhagwan/fzf-lua' },
+    {
+        "ibhagwan/fzf-lua",
+        event = "VeryLazy",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        config = function()
+            require("fzf-lua").setup({
+            -- your config here, or {}
+            })
+        end,
+    },
 
     -- surround
     -- e.g. cs"' das(
