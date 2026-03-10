@@ -1,41 +1,57 @@
 return {
     'nvim-treesitter/nvim-treesitter',
     event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-        'nvim-treesitter/nvim-treesitter-context'
-    },
     build = ":TSUpdate",
+    dependencies = {
+        "windwp/nvim-ts-autotag",
+    },
     config = function()
-        local configs = require('nvim-treesitter.configs')
-        local context = require('treesitter-context')
+        -- import nvim-treesitter plugin
+        local treesitter = require("nvim-treesitter.configs")
 
-        configs.setup {
-            ensure_installed = "all",
-            sync_install = false,
-            auto_install = true,
-        
+        treesitter.setup({
             highlight = {
                 enable = true,
-                -- Disable slow treesitter highlight for large files
-                disable = function(lang, buf)
-                    local max_filesize = 100 * 1024 -- 100 KB
-                    local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-                    if ok and stats and stats.size > max_filesize then
-                        return true
-                    end
-                end,
-        
-                -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-                -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-                -- Using this option may slow down your editor, and you may see some duplicate highlights.
-                -- Instead of true it can also be a list of languages
-                additional_vim_regex_highlighting = false,
             },
-        }
-        
-        context.setup{
-            min_window_height = 20,
-            separator = '✡'
-        }
+            -- enable indentation
+            indent = { enable = true },
+            -- enable autotagging (w/ nvim-ts-autotag plugin)
+            autotag = {
+                enable = true,
+            },
+            -- ensure these language parsers are installed
+            ensure_installed = {
+                "json",
+                "javascript",
+                "typescript",
+                "tsx",
+                "yaml",
+                "html",
+                "css",
+                "prisma",
+                "markdown",
+                "markdown_inline",
+                "svelte",
+                "graphql",
+                "bash",
+                "lua",
+                "vim",
+                "dockerfile",
+                "gitignore",
+                "query",
+                "vimdoc",
+                "c",
+                "python",
+            },
+            incremental_selection = {
+                enable = true,
+                keymaps = {
+                    init_selection      = "<C-n>",
+                    node_incremental    = "<C-n>",
+                    scope_incremental   = false, -- 如果 tmux 没用 Ctrl+s 冻结功能
+                    node_decremental    = "<C-p>",
+                },
+            },
+        })
     end,
 }

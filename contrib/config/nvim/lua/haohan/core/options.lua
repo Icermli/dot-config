@@ -3,6 +3,7 @@ vim.o.relativenumber = true
 vim.o.termguicolors  = true
 vim.o.spell          = true
 vim.o.spelllang      = 'en,cjk'
+vim.o.spelloptions   = 'camel'
 
 vim.o.tabstop        = 4
 vim.o.softtabstop    = 4
@@ -30,8 +31,12 @@ vim.o.timeoutlen     = 230
 vim.g.markdown_fenced_languages = {'python', 'javascript', 'html', 'css'}
 
 -- avoid folds messing up syntax highlighting
-vim.o.foldmethod     = 'marker'
-vim.opt.foldlevel    = 3
+vim.o.foldmethod     = "expr"
+vim.o.foldexpr       = "v:lua.vim.treesitter.foldexpr()"
+
+vim.o.foldenable     = true
+vim.o.foldlevel      = 3
+vim.o.foldlevelstart = 3
 vim.api.nvim_create_autocmd("Syntax", {
     pattern = "*",
     callback = function()
