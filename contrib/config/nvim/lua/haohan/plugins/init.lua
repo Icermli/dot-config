@@ -18,7 +18,16 @@ return {
         end,
     },
 
-    { 'HiPhish/rainbow-delimiters.nvim' }, -- parentheses guides
+    {
+        'HiPhish/rainbow-delimiters.nvim',
+        init = function()
+            vim.g.rainbow_delimiters = {
+                condition = function(bufnr)
+                    return vim.bo[bufnr].buftype == "" and vim.bo[bufnr].buflisted
+                end,
+            }
+        end,
+    }, -- parentheses guides
 
     -- status line
     {
@@ -91,13 +100,11 @@ return {
 
     -- treesitter
     {
-        'nvim-treesitter/nvim-treesitter',
-        build = function()
-            local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
-            ts_update()
+        'nvim-treesitter/nvim-treesitter-context',
+        config = function()
+            require("treesitter-context").setup()
         end,
     },
-    { 'nvim-treesitter/nvim-treesitter-context' },
 
     -- linters
     { 

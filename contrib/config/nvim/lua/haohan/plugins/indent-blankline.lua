@@ -30,7 +30,10 @@ return {
         end)
         
         -- rainbow-delimiters.nvim integration
-        vim.g.rainbow_delimiters = { highlight = highlight }
+        vim.g.rainbow_delimiters = {
+            highlight = highlight,
+            condition = vim.g.rainbow_delimiters and vim.g.rainbow_delimiters.condition,
+        }
         require("ibl").setup {
             scope = { highlight = highlight }
         }
