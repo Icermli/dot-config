@@ -112,7 +112,7 @@ function finish_up()
     exit 0
   else
     echo "- To finish setting up Tmux plugins, open up tmux and hit 'prefix + I'."
-    echo "- To finish setting up Neovim plugins, open up neovim and run ':PlugInstall'."
+    echo "- Neovim plugins are managed by lazy.nvim and will install on first launch."
     echo "- To finish setting up, open up zsh and do the zkbd setup (preferably in a true terminal)."
   fi
 
@@ -208,7 +208,7 @@ box_out "Setting up directory structure.."
   mkdir -p $HOME/.config/conforg;
   # mkdir -p $HOME/.config/nvim;
   # mkdir -p $HOME/.config/nvim/autoload;
-  # mkdir -p $HOME/.config/nvim/syntax;
+  mkdir -p $HOME/.config/nvim/syntax;
 
   mkdir -p $HOME/.config/ranger;
   mkdir -p $HOME/.config/ranger/colorschemes/;
@@ -245,7 +245,7 @@ setup_entry promptline_light $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-ut
 setup_entry promptline_dark $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 setup_entry nvim $DEFAULT_CONFORG_DIR/contrib/config $HOME/.config
 setup_entry fontconfig $DEFAULT_CONFORG_DIR/contrib/config $HOME/.config
-setup_entry tpm $DEFAULT_CONFORG_DIR/contrib/tmux-plugins $HOME/.tmux/plugin
+setup_entry tpm $DEFAULT_CONFORG_DIR/contrib/tmux-plugins $HOME/.tmux/plugins
 setup_entry .tmux.conf $DEFAULT_CONFORG_DIR/contrib/tmux $HOME
 
 
@@ -264,9 +264,6 @@ cp $DEFAULT_CONFORG_DIR/contrib/cli-utils/dev-tmux $HOME/cli-utils/dev-tmux
 
 # Shpotify
 cp $DEFAULT_CONFORG_DIR/contrib/shpotify/spotify $HOME/cli-utils/spotify
-
-# Vim-plug
-# cp contrib/vim-plug/plug.vim $HOME/.config/nvim/autoload/plug.vim
 
 # Vim-pyopencl
 cp contrib/vim-pyopencl/pyopencl.vim $HOME/.config/nvim/syntax/pyopencl.vim

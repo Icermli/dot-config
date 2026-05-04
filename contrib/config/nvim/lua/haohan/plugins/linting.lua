@@ -3,6 +3,47 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     config = function()
         local lint = require("lint")
+        local function active_python()
+            local candidates = {}
+            if vim.env.CONDA_PREFIX then
+                table.insert(candidates, vim.env.CONDA_PREFIX .. "/bin/python")
+            end
+            if vim.env.VIRTUAL_ENV then
+                table.insert(candidates, vim.env.VIRTUAL_ENV .. "/bin/python")
+            end
+            table.insert(candidates, vim.fn.exepath("python3"))
+            table.insert(candidates, vim.fn.exepath("python"))
+
+            for _, python in ipairs(candidates) do
+                if python ~= "" and vim.fn.executable(python) == 1 then
+                    return python
+                end
+            end
+        end
+
+        local function python_has_module(python, module)
+            if not python then
+                return false
+            end
+
+            local result = vim.system({ python, "-c", "import " .. module }, { text = true }):wait()
+            return result.code == 0
+        end
+
+        local python_path = active_python()
+        if python_has_module(python_path, "pylint") then
+            lint.linters.pylint.cmd = python_path
+            lint.linters.pylint.args = {
+                "-m",
+                "pylint",
+                "-f",
+                "json",
+                "--from-stdin",
+                function()
+                    return vim.api.nvim_buf_get_name(0)
+                end,
+            }
+        end
 
         lint.linters_by_ft = {
             python = { "pylint" },

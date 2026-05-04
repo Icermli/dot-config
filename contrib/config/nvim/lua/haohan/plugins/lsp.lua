@@ -18,6 +18,26 @@ return {
         }
     end,
     config = function()
+        local function active_python()
+            local candidates = {}
+            if vim.env.CONDA_PREFIX then
+                table.insert(candidates, vim.env.CONDA_PREFIX .. "/bin/python")
+            end
+            if vim.env.VIRTUAL_ENV then
+                table.insert(candidates, vim.env.VIRTUAL_ENV .. "/bin/python")
+            end
+            table.insert(candidates, vim.fn.exepath("python3"))
+            table.insert(candidates, vim.fn.exepath("python"))
+
+            for _, python in ipairs(candidates) do
+                if python ~= "" and vim.fn.executable(python) == 1 then
+                    return python
+                end
+            end
+        end
+
+        local python_path = active_python()
+
         require('mason').setup({
             ui = { border = "rounded" },
         })
@@ -72,6 +92,8 @@ return {
             capabilities = coq.lsp_ensure_capabilities({}).capabilities,
             settings = {
                 python = {
+                    pythonPath = python_path,
+                    defaultInterpreterPath = python_path,
                     analysis = {
                         autoSearchPaths = true,
                         useLibraryCodeForTypes = true,
@@ -99,6 +121,16 @@ return {
                 journal_file = '~/Personal/accounting/main.beancount',
             },
         })
+
+        vim.api.nvim_create_user_command("LspRestart", function()
+            local clients = vim.lsp.get_clients({ bufnr = 0 })
+            for _, client in ipairs(clients) do
+                client:stop()
+            end
+            vim.defer_fn(function()
+                vim.cmd("edit")
+            end, 100)
+        end, { desc = "Restart LSP clients attached to the current buffer" })
 
         -- Add python filetype to pyopencl for proper lsp mapping to happend
         vim.api.nvim_create_autocmd('FileType', { 

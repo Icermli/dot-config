@@ -73,32 +73,15 @@ See [this video](https://youtu.be/JXwS7z6Dqic) for more information about tmux.
 
 Tmux plugin manager (TPM) is used for some plugins of Tmux. To use it, run
 ```
-git submodule update --init .tumx/plugins/tpm
+git submodule update --init contrib/tmux-plugins/tpm
 ```
 then within tmux, press `Prefix I` to finish setup.
 
-## spacemacs
-
-Install emacs on Mac, as recommended by Spacemacs developers:
-```bash
-$ brew tap d12frosted/emacs-plus
-$ brew install emacs-plus
-$ brew linkapps emacs-plus
-```
-
-In `.spacemacs` file, load `spacemacs/user-init.el` in 
-`dotspacemacs/user-init ()` and load `spacemacs/user-config.el`
-in `dotspacemacs/user-config ()`.
-
 ## neovim
-The .nvimrc is a configuration file for neovim. To use it, first install 
-[vim-plug](https://github.com/junegunn/vim-plug) 
-following the instructions therein, then make a symlink of this file under $HOME.
-
-After that, start nvim and run
-```vim
-PlugUpdate | PlugUpgrade
-```
+Neovim config lives in `contrib/config/nvim` and is symlinked to
+`$HOME/.config/nvim` by `install.sh`. Plugins are managed by
+[lazy.nvim](https://github.com/folke/lazy.nvim); start `nvim` once and Lazy will
+bootstrap itself under Neovim's data directory.
 
 A good resource for learning vim is Steve's [Learn Vimscript the Hard Way](http://learnvimscriptthehardway.stevelosh.com/).
 
