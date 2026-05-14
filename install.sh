@@ -2,7 +2,6 @@
 
 OPTIND=1
 
-DPI=100
 VERBOSE=0
 QUIET=0
 LOGFILE=/tmp/conforg.log
@@ -10,25 +9,23 @@ DEFAULT_CONFORG_DIR=$HOME/.dot-config
 GITIGNORE_IN=./contrib/gitignore
 GITIGNORE_OUT=$HOME/.gitignore_global
 PASSWORD_STORE=false
-ALARM_SOUND=clock-chimes-daniel_simon.wav
 MINIMAL_INSTALL=false
+GITIGNORE_BEGIN="# >>> conforg managed gitignore >>>"
+GITIGNORE_END="# <<< conforg managed gitignore <<<"
 
 INSTALL_ARGS="$*"
 
 function show_help() {
   echo "-v Show detailed logs"
   echo "-q Supress all warnings, also unset -v"
-  echo "-d <DPI> Set the DPI value in .Xresources (default to be 100)."
-  echo "         A rule of thumb is to set this value such that 11pt font looks nice."
   echo "-f <file> Set log file"
   echo "-c <path> Set conforg path"
   echo "-g <file> Set global gitignore file"
-  echo "-a <file> Set which alarm sound to use under contrib/sounds"
   echo "-p Plain install (do not set up credentials with pass)"
   echo "-m Minimal install (for servers, without additional bells and whistles)"
 }
 
-while getopts "h?vd:a:f:qc:g:pm" opt; do
+while getopts "h?vf:qc:g:pm" opt; do
   case "$opt" in
     h|\?)
       show_help
@@ -36,10 +33,6 @@ while getopts "h?vd:a:f:qc:g:pm" opt; do
       ;;
     v)
       VERBOSE=1;;
-    a)
-      ALARM_SOUND=$OPTARG;;
-    d)
-      DPI=$OPTARG;;
     f)
       LOGFILE=$OPTARG;;
     q)
@@ -126,6 +119,10 @@ source_entry=$2
 home_entry=$3
 echo "-----------------------------------"
 echo Setting up $entry..
+if [ ! -e $source_entry/"$entry" ]; then
+  echo "Source $source_entry/$entry does not exist. Aborting." >&2
+  exit 1
+fi
 if [ -e $home_entry/"$entry" ];
 then
   if [ -L $home_entry/"$entry" ];
@@ -180,6 +177,56 @@ else
 fi
 }
 
+function setup_global_gitignore {
+  local target=$1
+  local tmp
+  local managed
+
+  mkdir -p "$(dirname "$target")"
+  tmp=$(mktemp "${TMPDIR:-/tmp}/conforg-gitignore.XXXXXX") || exit 1
+  managed=$(mktemp "${TMPDIR:-/tmp}/conforg-gitignore-managed.XXXXXX") || exit 1
+
+  {
+    echo "$GITIGNORE_BEGIN"
+    cat "$GITIGNORE_IN"/Global/*.gitignore
+    cat "$GITIGNORE_IN"/*.gitignore
+    echo "!*.py"
+    echo "$GITIGNORE_END"
+  } > "$managed"
+
+  if [ -f "$target" ]; then
+    awk -v begin="$GITIGNORE_BEGIN" -v end="$GITIGNORE_END" '
+      $0 == begin { skip = 1; next }
+      $0 == end { skip = 0; next }
+      !skip { print }
+    ' "$target" > "$tmp"
+  else
+    : > "$tmp"
+  fi
+
+  if [ -s "$tmp" ]; then
+    printf '\n' >> "$tmp"
+  fi
+  cat "$managed" >> "$tmp"
+  mv "$tmp" "$target"
+  rm -f "$managed"
+}
+
+function setup_tpm {
+  local tpm_path=$HOME/.tmux/plugins/tpm
+
+  if [ -L "$tpm_path" ] && [ ! -e "$tpm_path" ]; then
+    rm -f "$tpm_path"
+  fi
+
+  if [ ! -e "$tpm_path/.git" ]; then
+    git clone https://github.com/tmux-plugins/tpm "$tpm_path" \
+      >> "$LOGFILE" 2>&1
+  else
+    (cd "$tpm_path" && git pull >> "$LOGFILE" 2>&1 && cd - >> "$LOGFILE" 2>&1)
+  fi
+}
+
 box_out "Greetings. Please make sure you cloned the repo under $DEFAULT_CONFORG_DIR."
 
 box_out "Detecting your OS.."
@@ -206,13 +253,11 @@ box_out "Setting up directory structure.."
   fi
   mkdir -p $HOME/.config;
   mkdir -p $HOME/.config/conforg;
-  # mkdir -p $HOME/.config/nvim;
-  # mkdir -p $HOME/.config/nvim/autoload;
-  mkdir -p $HOME/.config/nvim/syntax;
 
   mkdir -p $HOME/.config/ranger;
   mkdir -p $HOME/.config/ranger/colorschemes/;
 
+  mkdir -p $HOME/.oh-my-zsh/custom/themes;
   mkdir -p $HOME/.tmux/plugins
 
   mkdir -p $HOME/cli-utils;
@@ -232,32 +277,30 @@ fi
 box_out "Setting up.."
 
 setup_entry .bashrc $DEFAULT_CONFORG_DIR/contrib/bash $HOME
-setup_entry powerlevel9k $DEFAULT_CONFORG_DIR/contrib $HOME/.oh-my-zsh/custom/themes
 setup_entry powerlevel10k $DEFAULT_CONFORG_DIR/contrib $HOME/.oh-my-zsh/custom/themes
 setup_entry .zshrc $DEFAULT_CONFORG_DIR/contrib/zsh $HOME
 setup_entry .zprofile $DEFAULT_CONFORG_DIR/contrib/zsh $HOME
-setup_entry tmuxline $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
-setup_entry tmuxline_light $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
-setup_entry tmuxline_dark $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
-setup_entry applescript $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 setup_entry promptline $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 setup_entry promptline_light $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 setup_entry promptline_dark $DEFAULT_CONFORG_DIR/contrib/cli-utils $HOME/cli-utils
 setup_entry nvim $DEFAULT_CONFORG_DIR/contrib/config $HOME/.config
 setup_entry fontconfig $DEFAULT_CONFORG_DIR/contrib/config $HOME/.config
-setup_entry tpm $DEFAULT_CONFORG_DIR/contrib/tmux-plugins $HOME/.tmux/plugins
 setup_entry .tmux.conf $DEFAULT_CONFORG_DIR/contrib/tmux $HOME
+setup_tpm
 
+##################################################################
+# minimal install ends here
+##################################################################
+if $MINIMAL_INSTALL; then
+  box_warn "Warning: This is a minimal install, skipping extra setups."
+  echo "+ Finishing up"
+  finish_up
+fi
 
 box_out "Adding final touches.."
 
 # Docker-cleanup
 cp $DEFAULT_CONFORG_DIR/contrib/cli-utils/docker-cleanup $HOME/cli-utils/docker-cleanup
-
-# Set_dynamic_colors
-cp $DEFAULT_CONFORG_DIR/contrib/cli-utils/enter_the_dark $HOME/cli-utils/enter_the_dark
-cp $DEFAULT_CONFORG_DIR/contrib/cli-utils/enter_the_light $HOME/cli-utils/enter_the_light
-cp $DEFAULT_CONFORG_DIR/contrib/cli-utils/set_dynamic_colors $HOME/cli-utils/set_dynamic_colors
 
 # Dev-tmux
 cp $DEFAULT_CONFORG_DIR/contrib/cli-utils/dev-tmux $HOME/cli-utils/dev-tmux
@@ -266,6 +309,7 @@ cp $DEFAULT_CONFORG_DIR/contrib/cli-utils/dev-tmux $HOME/cli-utils/dev-tmux
 cp $DEFAULT_CONFORG_DIR/contrib/shpotify/spotify $HOME/cli-utils/spotify
 
 # Vim-pyopencl
+mkdir -p $HOME/.config/nvim/syntax
 cp contrib/vim-pyopencl/pyopencl.vim $HOME/.config/nvim/syntax/pyopencl.vim
 
 # Bash-insulter
@@ -277,25 +321,12 @@ if [[ $VERBOSE != 0 ]]; then
 fi
 
 # .gitignore_global
-cat $GITIGNORE_IN/Global/*.gitignore >> $GITIGNORE_OUT
-cat $GITIGNORE_IN/*.gitignore >> $GITIGNORE_OUT
-
-# Python files are not to be ignored (e.g. __init__.py)
-echo "!*.py" >> $GITIGNORE_OUT
+setup_global_gitignore "$GITIGNORE_OUT"
 
 # Jupyter notebook config
 # requires: jupyterlab, jupytext
 # cd contrib/jupyter-nbconfig && sh ./setup.sh
 # cd ../..
-
-# TPM (auto update if exists)
-TPMPATH=$HOME/.tmux/plugins/tpm
-if ! [ -d $TPMPATH/.git ]; then
-  git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm \
-  >> $LOGFILE 2>&1
-else
-  (cd $TPMPATH && git pull >> $LOGFILE 2>&1 && cd - >> $LOGFILE 2>&1)
-fi
 
 # Ranger file glyphs
 cd contrib/ranger_devicons && make install \
@@ -306,14 +337,5 @@ cd ../..
 cd contrib/ranger_colortheme && cat ranger_colortheme_custom.py \
   > $HOME/.config/ranger/colorschemes/custom.py
 cd ../..
-
-##################################################################
-# minimal install ends here
-##################################################################
-if $MINIMAL_INSTALL; then
-  box_warn "Warning: This is a minimal install, skipping extra setups."
-  echo "+ Finishing up"
-  finish_up
-fi
 
 finish_up

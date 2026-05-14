@@ -2,7 +2,7 @@
 
 # dot-config
 
-Several config files for bash, zsh, neovim and others. Inspaired by [https://github.com/xywei/dot-files](https://github.com/xywei/dot-files).
+Several config files for bash, zsh, neovim and others. Inspired by [https://github.com/xywei/dot-files](https://github.com/xywei/dot-files).
 
 # download
 
@@ -14,7 +14,7 @@ $ git submodule update --init --recursive
 ```
 
 # dot-files
-A bunch of dot files that work accross different platforms.
+A bunch of dot files that work across different platforms.
 
 # install
 ## Install Homebrew
@@ -61,6 +61,7 @@ brew install node
 ## Then install all the dots
 Run:
 ```
+./check_deps.sh
 ./install.sh
 ```
 
@@ -71,11 +72,9 @@ See [this video](https://youtu.be/JXwS7z6Dqic) for more information about tmux.
 
 ### TPM
 
-Tmux plugin manager (TPM) is used for some plugins of Tmux. To use it, run
-```
-git submodule update --init contrib/tmux-plugins/tpm
-```
-then within tmux, press `Prefix I` to finish setup.
+Tmux plugin manager (TPM) is used for tmux plugins, including Dracula. `install.sh`
+bootstraps TPM into `$HOME/.tmux/plugins/tpm`; within tmux, press `Prefix I` to
+install or update plugins.
 
 ## neovim
 Neovim config lives in `contrib/config/nvim` and is symlinked to
@@ -85,17 +84,10 @@ bootstrap itself under Neovim's data directory.
 
 A good resource for learning vim is Steve's [Learn Vimscript the Hard Way](http://learnvimscriptthehardway.stevelosh.com/).
 
-## ctags
-
-The .ctags is to maek ctags ignore some common directories. To use is, make a symlink as $HOME/.ctags.
-
-## clang-format
-
-There is a .clang-format file that is used to format C++ code. To use it, make a symlink as $HOME/.clang-format and pass -style=file to clang-format
-
 ## MacOS
 
-The .bashrc here also works for MacOS. Just add 
+Zsh is the primary shell config and is installed as `$HOME/.zshrc`. The `.bashrc`
+here also works for MacOS. Just add
 
 ```bash
 source $HOME/.bashrc
