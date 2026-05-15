@@ -49,10 +49,10 @@ return {
       local keymap = vim.keymap.set -- for conciseness
   
       -- which-key group
-      keymap("n", "<leader>e", "", { desc = "Explorer" })
-      keymap("n", "<leader>ee", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle explorer" })
-      keymap("n", "<leader>ef", "<cmd>NvimTreeFindFileToggle<CR>", { desc = "Find current file" })
-      keymap("n", "<leader>ec", "<cmd>NvimTreeCollapse<CR>", { desc = "Collapse folders" })
-      keymap("n", "<leader>er", "<cmd>NvimTreeRefresh<CR>", { desc = "Refresh explorer" })
+      keymap("n", "<leader>e", "", { desc = "File explorer" })
+      keymap("n", "<leader>ee", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
+      keymap("n", "<leader>ef", "<cmd>NvimTreeFindFileToggle<CR>", { desc = "Reveal current file" })
+      keymap("n", "<leader>ec", "<cmd>NvimTreeCollapse<CR>", { desc = "Collapse explorer folders" })
+      keymap("n", "<leader>er", "<cmd>NvimTreeRefresh<CR>", { desc = "Refresh file explorer" })
     end
   }

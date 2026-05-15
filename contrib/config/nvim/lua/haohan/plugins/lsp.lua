@@ -130,7 +130,7 @@ return {
             vim.defer_fn(function()
                 vim.cmd("edit")
             end, 100)
-        end, { desc = "Restart LSP clients attached to the current buffer" })
+        end, { desc = "Restart buffer LSP clients" })
 
         -- Add python filetype to pyopencl for proper lsp mapping to happend
         vim.api.nvim_create_autocmd('FileType', { 
